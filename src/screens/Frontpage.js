@@ -2,26 +2,31 @@ import  React from 'react';
 import {StyleSheet, TouchableOpacity, View, Text, ImageBackground} from 'react-native';
 import  Constants from 'expo-constants';
 import * as Animatable from 'react-native-animatable';
+// import CLogin from '../screens/CustomerLogin';
+// import CRegister from '../screens/CustomerRegister';
+// import SLogin from '../screens/ShopownerLogin';
+// import SRegister from '../screens/ShopownerRegister';
+// import DLogin from '../screens/DeliveryboyLogin';
+// import DRegister from '../screens/DeliveryboyRegister';
 
 export default class Front extends React.Component{
     render(){
-        const {navigate} = this.props.navigation
     return (<View style= {styles.container}>
             <ImageBackground source={require('../images/live.gif')}
              style={{width:"100%",height:"130%", position:'absolute'}}
             />
-            <Animatable.Text animation='fadeInDownBig' iterationCount="5" style={styles.header}>
+            <Animatable.Text animation='fadeInDownBig' iterationCount="1" style={styles.header}>
                 Authenticate Shopee
                 </Animatable.Text>
-            <Animatable.View animation='fadeInUpBig' iterationCount="5"  style={styles.footer}>
+            <Animatable.View animation='fadeInUpBig' iterationCount="1"  style={styles.footer}>
             <TouchableOpacity onPress={()=>{
                 console.log('PRESSED');
 
             }}>
             <View style={styles.buttonContainer1}>
-            <Text style={styles.buttonText1}>
+            <a href="CLogin"><Text style={styles.buttonText1}>
                 SHOP OWNER
-            </Text>
+            </Text></a>
             </View>
 
             </TouchableOpacity>
@@ -39,8 +44,7 @@ export default class Front extends React.Component{
                 console.log('PRESSED');
             }}>
             <View style={styles.buttonContainer3}>
-            <Text style={styles.buttonText3}
-            onPress={()=>navigate('DeliveryboyLogin')}>
+            <Text style={styles.buttonText3}>
                 DELIVERY BOY
             </Text>
             </View>

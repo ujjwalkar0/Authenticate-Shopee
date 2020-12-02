@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default class DeliveryboyLogin extends React.Component{
+export default class DLogin extends React.Component{
     constructor(){
         super()
         this.state= {
@@ -20,7 +20,7 @@ export default class DeliveryboyLogin extends React.Component{
         }
     }
     render(){
-        const {navigate} = this.props.navigation
+        // const {navigate} = this.props.navigation
         return(
             <View style={{backgroundColor:"#FFF", height:"100%"}}>
                 <Image source= {require('../images/customer.jpeg')}

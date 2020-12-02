@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
-export default class Login extends React.Component{
+export default class CRegister extends React.Component{
     constructor(){
         super()
         this.state= {

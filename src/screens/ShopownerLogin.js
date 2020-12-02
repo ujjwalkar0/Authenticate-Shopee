@@ -6,7 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
-export default class Login extends React.Component{
+export default class SLogin extends React.Component{
     constructor(){
         super()
         this.state= {
@@ -25,7 +25,7 @@ export default class Login extends React.Component{
     render(){
         
 
-        const {navigate} = this.props.navigation
+        // const {navigate} = this.props.navigation
         
         return(
             <View style={{backgroundColor:"#FFF", height:"100%"}}>
