@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %} Order Details... {% endblock title %}
+{% block content %}
+    
+{% if user.is_authenticated %}
+
+<style>
+label[for=id_product_id],label[for=id_customer_id],label[for=id_Pin_No],label[for=id_address],label[for=id_quantity],
+#id_address,#id_quantity,#id_product_id,#id_customer_id,#id_Pin_No{
+  display: none;
+}
+
+</style>
+<h1>Order Details... </h1>
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+<h3>Do You Want to Accept this order ??</h3><br>
+{{ form.as_p}}
+{{user.id}}
+<button type="submit" name="dboy_id" value="{{user.id}}" class="btn btn-secondary w3-right">Continue</button>
+<!-- {{ form.password }} -->
+</form>
+{% else %}
+<h3> You are not loged in</h3>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %} Order... {% endblock title %}
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<style>
+    #hide{
+        display: none;
+    }
+</style>
+<h1> Place Your Order... </h1>
+<form method="POST" >
+{% csrf_token %}
+<input type="text" id="hide" name="product_id" value="{{ system }}">
+<input type="text" id="hide" name="messages" value="Write Your message">
+<input type="text" id="hide" name="Delivery_Charge" value="0">
+<input type="text" id="hide" name="Phone_No" value="0">
+
+<h4> Quantity :</h4>
+{{ form.quantity }}
+<h4> Address :</h4>
+{{ form.address }}
+<h4> Enter Your Pin No Here :</h4>
+{{ form.Pin_No }}
+{{user.id}}
+
+<button type="submit" name="customer_id" value="{{user.id}}" class="btn btn-secondary">Submit</button>
+</form>
+
+{% else %}
+<h3> You are not loged in</h3>
+{% endif %}
+{% endblock content %}

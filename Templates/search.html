@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+
+{% block my_content %}
+
+<!------------------------------------------------------------>
+
+
+<style>
+    #layout{
+      height: 500px;
+    }
+    @media (max-width:801px)  { 
+      #layout{
+      height: 250px;
+      }
+      #down{
+        margin-bottom: -50px;
+    }
+      #layout-p{
+        font-size:small;
+      }
+      #layout-h1{
+        font-size: larger;
+      }
+      /* #layout-h1-3{
+        font-size: larger;
+        margin-bottom: -30px;
+      } */
+  }
+  </style>
+  
+  <!-- <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img id="layout" src="media/layout/image1.jpeg" alt="First slide" />
+        <div class="container">
+          <div class="carousel-caption text-center" id="down">
+            <h1 id="layout-h1" style="color: blue; background-color: wheat;"><b>Welcome to Electronics Store.</b></h1>
+            <p id="layout-p" style="background-color:cornsilk; color:black">Buy Latops, Mobiles and Accesories, TV, AC, Freeze, Parts of robots and IOT, modern electronics gadgets etc, from our website</p>
+            <p><a class="btn btn-lg btn-primary" href="#product" role="button">See our All Products</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img id="layout" src="media/layout/image2.jpeg" alt="Second slide">
+        <div class="container">
+          <div class="carousel-caption">
+            <h1 id="layout-h1">Get 20% off on Laptops</h1>
+            <p id="layout-p" ><a class="btn btn-lg btn-primary" href="/catagory/Laptop/" role="button">Buy Now</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img id="layout" src="media/layout/image3.jpeg" alt="Third slide">
+        <div class="container">
+          <div class="carousel-caption text-right" id="down">
+            <h1 id="layout-h1">Buy Modern Humanoid Robots.</h1>
+            <p id="layout-p">Artifical Intelligent are changing the world. Buy AI robots and take one step to the future </p>
+            <p><a class="btn btn-lg btn-primary" href="#" role="button">See Robots</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div> -->
+
+  
+  <!-------------------------------------------------------------->
+<div id="product"
+  style="margin: 100px 30px">
+</nav>
+
+  <h5> Search Result For {{query}} </h5>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 ">
+  
+  {% for post in mobiles_list %}
+    <div class="col mb-3">
+  <div class="card card-cascade wider">
+  
+     <!-- Start your project here-->
+   <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
+  
+    <div class="carousel-inner" role="listbox">
+      <div class="carousel-item active">
+        {% if post.image %}
+        <img class="card-img-top center" src="{{post.Product_img_link}}" 
+        style="height: 200px;
+        width:100px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;"
+
+        alt="{{post.Product_name}} image">
+        {% else %}
+        <img class="card-img-top center" src="{{post.Product_img_link}}" 
+        style="height: 200px;
+        width:100px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;"
+
+        alt="{{post.Product_name}} image">
+        {% endif %}
+        <div class="card-body ">
+            <a href="{% url 'mobiles-details' post.pk %}">
+              <h4 class="card-title text-left" ><strong>{{post.Product_name}}</strong></h4>
+            </a>
+            <div>
+            <h5 class="green-text" style="float: left;"> <strong>Price :- {{post.Product_price}}</strong></h5><br>
+          </div>
+            <br />
+            <p class="card-text text-left">{{post.feature|slice:":100"}}........
+            <br />
+              <a style="float: right;" href="{% url 'mobiles-details' post.pk %}" style="color: blue;"> Read More >> </a></p>
+            <br>
+            
+              {% if user.is_superuser %}
+              <br>
+            <a href="{% url 'mobile_delete' post.pk %}"><button class="btn w3-red" style="float: left;">Delete</button></a>
+            <a href="{% url 'mobile_update' post.pk %}"><button class="btn w3-green" style="float: right;">Edit</button></a>
+            <br><br>
+    
+            {% endif %}
+            
+            <div class="card-footer text-muted text-center mt-4">
+              {{ post.post_date }}
+            </div>
+        
+          </div> 
+          </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  {% endfor %}
+  </div>
+  
+  <!-------------------------------------------------------------->
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 ">
+  
+    {% for post in cars_list %}
+      <div class="col mb-3">
+    <div class="card card-cascade wider">
+    
+       <!-- Start your project here-->
+     <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
+    
+      <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+
+          <img class="card-img-top" src="/media/{{post.image}}"
+          alt="Card image cap">
+          <div class="card-body ">
+    
+              <a href="{% url 'car-details' post.pk %}">
+                <h4 class="card-title text-left" ><strong>{{post.name}}</strong></h4>
+              </a>
+              <div>
+              <h5 class="blue-text"> <strong>Price :- {{post.selling_price}}</strong></h5>
+              <h5 class="blue-text"> <strong>Year :- {{post.year}}</strong></h5>
+              <h5 class="blue-text"> <strong>Km Driven :- {{post.km_driven}}</strong></h5>
+              <h5 class="blue-text"> <strong>Fuel :- {{post.fuel}}</strong></h5>
+              <h5 class="blue-text"> <strong>Seller Type :- {{post.seller_type}}</strong></h5>
+              <h5 class="blue-text"> <strong>Transmission :- {{post.transmission}}</strong></h5>
+              <h5 class="blue-text"> <strong>Owner :- {{post.owner}}</strong></h5>
+            </div>
+              <br />
+
+                <br>
+                {% if user.is_superuser %}
+
+              <a href="{% url 'car_delete' post.pk %}"><button class="btn w3-red" style="float: left;">Delete</button></a>
+              <a href="{% url 'car_update' post.pk %}"><button class="btn w3-green" style="float: right;">Edit</button></a>
+              <br><br>
+
+              {% endif %}
+              
+              <div class="card-footer text-muted text-center mt-4">
+                {{ post.post_date }}
+              </div>
+          
+            </div> 
+            </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
+  <!--------------------  Cars  -------------------------------->
+
+
+<div class="row row-cols-1 row-cols-md-3">
+
+{% for post in object_list %}
+  <div class="col mb-4">
+<div class="card card-cascade wider">
+
+   <!-- Start your project here-->
+ <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
+
+  <div class="carousel-inner" role="listbox">
+    <div class="carousel-item active">
+      {% if post.image == '' %}
+      <img class="card-img-top" src="/media/{{post.image}}"
+      alt="Card image cap">
+      {% else %}
+      <img class="card-img-top" src="/media/{{post.image}}"
+            alt="Card image cap">
+      {% endif %}
+      <div class="card-body ">
+
+          <a href="{% url 'article-details' post.pk %}">
+            <h4 class="card-title text-left" ><strong>{{post.title}}</strong></h4>
+          </a>
+          <div>
+          <h5 class="green-text" style="float: left;"> <strong>Price :- {{post.price}}</strong></h5><br>
+          <h5 class="green-text" style="float: left;"> <strong>Stock :- {{post.stock}}</strong></h5></div>
+          <br />
+          <a href="{% url 'catagoryview' post.catagory %}">
+            <h5 class="blue-text pb-2 text-right"><strong>{{post.catagory}}</strong></h5>
+          </a>
+          <p class="card-text text-left">{{post.body|slice:":100"}}........
+            <br />
+            <a style="float: right;" href="{% url 'article-details' post.pk %}" style="color: blue;"> Read More >> </a></p>
+      
+            {% if user.is_superuser %}
+            <br>
+          <a href="{% url 'delete' post.pk %}"><button class="btn w3-red" style="float: left;">Delete</button></a>
+          <a href="{% url 'update' post.pk %}"><button class="btn w3-green" style="float: right;">Edit</button></a>
+          <br><br>
+  
+          {% endif %}
+          
+          <div class="card-footer text-muted text-center mt-4">
+            {{ post.post_date }}
+          </div>
+      
+        </div> 
+        </div>
+  </div>
+</div>
+</div>
+</div>
+{% endfor %}
+</div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+
+{% if mobiles_list %}
+   {% for p in mobiles_list.paginator.page_range %}
+    {% if mobiles_list.number == p %}
+    <li class="page-item active">
+      <a href="search?query={{query}}&page={{ p.previous_page_number }}" class="page-link">{{ p }}</a>
+    </li>
+    {% else %}
+    <li class="page-item">
+      <a href="search?query={{query}}&page={{ p }}" class="page-link">{{ p }}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% if object_list %}
+    {% for p in object_list.paginator.page_range %}
+    {% if object_list.number == p %}
+    <li class="page-item active">
+      <a href="search?query={{query}}&page={{ p.previous_page_number }}" class="page-link">{{ p }}</a>
+    </li>
+    {% else %}
+    <li class="page-item">
+      <a href="search?query={{query}}&page={{ p }}" class="page-link">{{ p }}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% if cars_list %}
+    {% for p in cars_list.paginator.page_range %}
+    {% if cars_list.number == p %}
+    <li class="page-item active">
+      <a href="search?query={{query}}&page={{ p.previous_page_number }}" class="page-link">{{ p }}</a>
+    </li>
+    {% else %}
+    <li class="page-item">
+      <a href="search?query={{query}}&page={{ p }}" class="page-link">{{ p }}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+{% endif %}
+
+
+  </ul>
+</nav>
+
+{% endblock my_content %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if user_type == "Business" %}
+<h1>Add Catagory... </h1>
+<form method="POST">
+{% csrf_token %}
+{{ form.as_p}}
+<button class="btn btn-secondary">Add</button>
+</form>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if user.get_username == phones.salesman %}
+<h3>Delete : {{ post.title }} </h3>
+<form method="POST">
+{% csrf_token %}
+<strong>Are you sure ....</strong>
+<button class="btn btn-secondary">Delete Post</button>
+</form>
+{% elif user.is_superuser %}
+<h3>Delete : {{ post.title }} </h3>
+<form method="POST">
+{% csrf_token %}
+<strong>Are you sure ....</strong>
+<button class="btn btn-secondary">Delete Post</button>
+</form>
+{% else %}
+<h3>Delete : {{ post.title }} </h3>
+<form method="POST">
+{% csrf_token %}
+<strong>Are you sure ....</strong>
+<button class="btn btn-secondary">Delete Post</button>
+</form>
+{% endif %}
+
+
+
+{% endblock content %}

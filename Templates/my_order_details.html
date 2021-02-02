@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %} Order Details... {% endblock title %}
+{% block content %}
+    
+{% if user.is_authenticated %}
+
+<h1>My Order Details... </h1>
+{% for i,j in my_orders %}
+{% for k in i %}
+<div class="col mb-12" style="margin: 10px;">
+  <div class="card card-cascade wider">
+  
+     <!-- Start your project here-->
+   <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
+  
+    <div class="carousel-inner" role="listbox">
+      <div class="carousel-item active">
+        <div class="card-body ">
+          {% if k.name %}
+          <h3>{{k.name}}</h3>
+          {% else %}
+          <h3>{{k}}</h3>
+          {% endif %}
+            <p class="card-text text-left">
+            <br />
+
+            <h4>Quantity :- {{j.quantity}} </h4>
+            <a class="btn btn-yellow" style="color: black; float: right;" href="{{j.product_id}}"> See the Product</a> 
+            <p class="card-text text-left">
+            <br />
+
+            {% if j.messages != "Write Your message" %}
+            <h4>Response :- {{j.messages}} </h4>
+            <h4>Delivery Charge :- {{j.Delivery_Charge}} </h4>
+            <h4>Phone No. :- {{j.Phone_No}}</h4>
+            {% else %}
+            <h4>No Response Till Now</h4>
+            {% endif %}
+            <div class="card-footer text-muted text-center mt-4">
+
+            </div>
+        
+          </div> 
+          </div>
+    </div>
+  </div>
+  </div>
+  </div>
+<br>
+{% endfor %}
+{% endfor %}
+{% else %}
+
+<h3> You are not loged in</h3>
+{% endif %}
+{% endblock content %}

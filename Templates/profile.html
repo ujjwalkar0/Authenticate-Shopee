@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} CSEKod.tech {% endblock %}
+
+{% block content %}
+
+<!-- Card -->
+<div class="card testimonial-card">
+
+    <!-- Background color -->
+    <div class="card-up lighten-1" style="background-color: aqua; height: 100px;">
+      </div>
+  
+    <!-- Content -->
+    <div class="card-body">
+      <!-- Name -->
+      {% comment %}
+      {% if users.username == user.get_username %}
+      <a href="/edit_profile" class="btn w3-green" style="float: right; width: 200px; margin-top: -40px;">Edit Profile</a>
+      {% endif %}
+      {% endcomment %}
+
+      <hr>
+  {% if user_type != "Business" %}
+  {{users.firstname}}
+  {{ users.lastname }}
+  {% endif %}
+
+      {% for i in shop %}
+      
+      <!-- Quotation -->
+      <p> <b> Shop Owner Name :- </b> {{ users.firstname }} {{ users.lastname }} </p>
+      <p> <b> Shop Name :- </b> {{i.shop_name}} </p>
+      </p>
+      <hr>
+      <p> <b> Address :- </b> {{ i.address }} </p>
+      <hr>
+      <p> <b>Mobile No. :- </b> {{ i.phone_no }} </p>
+      <p> <b>Website Url. :- </b> {{ i.website }} </p>
+      <p> <b>Email Id. :- </b> {{ i.email_id }} </p>
+
+    </div>
+    {% endfor %}
+
+  </div>
+  <!-- Card -->
+
+{% endblock content %}

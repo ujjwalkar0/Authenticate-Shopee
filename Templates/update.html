@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Update </h1>
+{% comment %}
+{{phones.user_id}}
+{{user.id}}
+{% endcomment %}
+
+
+{% if phones.user_id == user.id %}
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+{{ form.as_p}}
+<button class="btn btn-secondary">Update</button>
+</form>
+
+{% elif car.user_id == user.id %}
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+{{ form.as_p}}
+<button class="btn btn-secondary">Update</button>
+</form>
+
+{% elif post.user_id == user.id %}
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+{{ form.as_p}}
+<button class="btn btn-secondary">Update</button>
+</form>
+
+
+{% elif user.is_superuser %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p}}
+    <button type="submit" name="user_id" value="{{ user.id }}" class="btn btn-secondary">Update</button>
+    </form>    
+
+{% else %}
+    <H3> You Can't edit this post </h3>
+{% endif %}
+{% endblock content %}

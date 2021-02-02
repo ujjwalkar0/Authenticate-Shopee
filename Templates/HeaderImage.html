@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if user.is_superuser %}
+<h1>Add an ITem... </h1>
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+{{ form.as_p}}
+<button name="author" value ="{{user.get_username}}" class="btn btn-secondary">Post</button>
+</form>
+{% else %}
+<h1> You are not a SuperUser. You can't add a Item</h1>
+{% endif%}
+
+
+{% endblock content %}

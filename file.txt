@@ -1,0 +1,77 @@
+Open
+ |
+ |
+ |------>  Not Loged In User
+ |               |--------> Frontpage :- Mobiles Api :-  https://authenticateshopee.herokuapp.com/api/Front/Phones/
+ |               |--------> Frontpage :- Car Api :- https://authenticateshopee.herokuapp.com/api/Front/Car/
+ |               |--------> Frontpage :- Other Products Api :- https://authenticateshopee.herokuapp.com/api/Front/others/
+ |
+ |
+ |------>  Loged in User
+ |              |
+ |              |
+ |              |------> Business 
+ |                          |
+ |                          |
+ |                          |--------> If Shop Registered: 
+ |                          |               Register Shop :- /api/Shop/create (Incomplete)
+ |                          |           Else:
+ |                          |               Edit Shop :- 
+ |                          |
+ |                          |--------> Add Catagories :- /api/Catagoriess/create/
+ |                          |
+ |                          |
+ |                          |-------->Add New Item
+ |                          |               |
+ |                          |               |---------> Add Mobiles  ( Add Image Field , remove :- Cust review) :- /api/Phones/create/
+ |                          |               |
+ |                          |               |---------> Add Cars  :- /api/Car/create/
+ |                          |               |
+ |                          |               |---------> Add Other :- /api/post/create/
+ |                          |    
+ |                          |
+ |                          |
+ |                          |
+ |                       HomePage ------> Products of that seller
+ |                                                  |
+ |                                                  |-------> Edit 
+ |                                                             |
+ |                                                             |-----> Mobiles :- /Phones/<pk>/update   ( Api Not Completed)
+ |                                                             |-----> Cars :-  api/Car/3/update  ( Api Not Completed)
+ |                                                             |-----> Others :-  ( Api Not Completed)
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ |
+ | 
+ |------>  SuperUser Login
+
+
+Login  (Problem In Web)
+ |     
+ |
+ |---------------> https://authenticateshopee.herokuapp.com/rest-auth/login/
+        
+Register  (Problem In API)
+ |
+ |
+ |
+ |
+

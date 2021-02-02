@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if user_type == "Business" %}
+
+<h1>Add an ITem... </h1>
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+{{ form.media}}
+{{ form.as_p}}
+{{user.id}}
+<button type="submit" name="user_id" value ="{{user.id}}" class="btn btn-secondary">Post</button>
+</form>
+{% else %}
+<h1> {{user_type}} Can't add a product</h1>
+{% endif%}
+
+
+{% endblock content %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %} Edit Profile... {% endblock title %}
+{% block content %}
+<style>
+  label[for=id_password],.helptext,#id_password {
+    display: none;
+  }
+</style>
+
+{% if user.is_authenticated %}
+<h1>Edit Profile... </h1>
+<form method="POST" enctype="multipart/form-data" action=".">
+{% csrf_token %}
+{{ form.as_p}}
+<button type="submit" class="btn btn-secondary">Update Profile</button>
+<!-- {{ form.password }} -->
+</form>
+{% else %}
+<h3> You are not loged in</h3>
+{% endif %}
+{% endblock content %}

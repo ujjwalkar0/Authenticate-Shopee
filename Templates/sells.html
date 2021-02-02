@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+<h1> Orders </h1>
+<hr>
+{% for i,j in my_sells %}
+
+{% for l in i %}
+<h3>{{l}}</h3>
+{% endfor %}
+<br>
+
+<a class="btn w3-green" href="/users/profile/{{j.customer_id}}"> See The Buyer </a>
+{% if j.dboy_id %}
+<a class="btn w3-cyan w3-right" href="/users/profile/{{j.dboy_id}}"> See The Delevery Boy </a>
+{% endif %}
+<h5 class="w3-center"> Address to Deliver :- {{j.address}}</h5>
+<h5 class="w3-center"> Quantity :- {{j.quantity}}</h5>
+
+{% if j.Phone_No %}
+<h5 class="w3-center"> Contact No of Delivery Boy :- {{j.Phone_No}}</h5>
+{% endif %}
+<br>
+<hr>
+{% endfor %}
+
+{% endblock content%}

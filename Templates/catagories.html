@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block my_content %}
+<div id="product"
+style="margin: 75px 30px"></nav>
+
+{% if phones %}
+
+  <!-------------------------- Mobiles ------------------------------------>
+  <h3> Mobiles </h3>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 ">
+  
+    {% for post in phones %}
+      <div class="col mb-3">
+    <div class="card card-cascade wider">
+    
+       <!-- Start your project here-->
+     <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
+    
+      <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+          <img class="card-img-top center" src="{{post.Product_img}}" 
+          style="height: 200px;
+          width:100px;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;"
+  
+          alt="{{post.Product_name}} image">
+          <div class="card-body ">
+    
+              <a href="{% url 'mobiles-details' post.pk %}">
+                <h4 class="card-title text-left" ><strong>{{post.Product_name}}</strong></h4>
+              </a>
+              <div>
+              <h5 class="green-text" style="float: left;"> <strong>Price :- {{post.Product_price}}</strong></h5><br>
+            </div>
+              <br />
+              <p class="card-text text-left">{{post.feature|slice:":100"}}........
+              <br />
+                <a style="float: right;" href="{% url 'mobiles-details' post.pk %}" style="color: blue;"> Read More >> </a></p>
+              <br>
+              Shop Name :-{{post.shop_name}}
+              
+                {% if user.is_superuser %}
+                <br>
+              <a href="{% url 'delete' post.pk %}"><button class="btn w3-red" style="float: left;">Delete</button></a>
+              <a href="{% url 'update' post.pk %}"><button class="btn w3-green" style="float: right;">Edit</button></a>
+              <br><br>
+      
+              {% endif %}
+              
+              <div class="card-footer text-muted text-center mt-4">
+                {{ post.post_date }}
+              </div>
+          
+            </div> 
+            </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
+    
+  
+  <!-------------------------------------------------------------->
+{% elif cars %}
+
+hello car
+
+  <!-------------------------------------------------------------->
+
+{% elif catagory_posts %}
+<h1>{{ cats }} Catagories... </h1>
+
+
+
+<div class="row row-cols-1 row-cols-md-3">
+
+{% for post in catagory_posts %}
+
+<!-- {{ post }} -->
+
+<div class="col mb-4">
+    <div class="card card-cascade wider">
+    
+       <!-- Start your project here-->
+     <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
+    
+      <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+          {% if post.image == '' %}
+          <img class="card-img-top" src="/media/{{post.image}}"
+          alt="Card image cap">
+          {% else %}
+          <img class="card-img-top" src="/media/{{post.image}}"
+                alt="Card image cap">
+          {% endif %}
+          <div class="card-body ">
+    
+              <a href="{% url 'article-details' post.pk %}">
+                <h4 class="card-title text-left" ><strong>{{post.title}}</strong></h4>
+              </a>
+              <h5 class="green-text" style="float: left;"> <strong>Price :- {{post.price}}</strong></h5>
+              <br />
+
+              <p class="card-text text-left">{{post.body|slice:":100"}}........
+                <br />
+                <a style="float: right;" href="{% url 'article-details' post.pk %}" style="color: blue;"> Read More >> </a></p>
+          
+                {% if user.is_superuser %}
+                <br>
+              <a href="{% url 'delete' post.pk %}"><button class="btn w3-red" style="float: left;">Delete</button></a>
+              <a href="{% url 'update' post.pk %}"><button class="btn w3-green" style="float: right;">Edit</button></a>
+              <br><br>
+      
+              {% endif %}
+              
+              <div class="card-footer text-muted text-center mt-4">
+                {{ post.post_date }}
+              </div>
+          
+            </div> 
+            </div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+
+{% endfor %}
+{% else %}
+
+<h1> No Product of this catagory available</h1>
+
+{% endif %}
+
+  {% if phones.has_previous %}
+  <a href="?page={{phones.previous_page_number}}"><button class="w3-btn w3-yellow" style="float: left;">Previous Page</button></a>
+  {% endif %}
+  {% if phones.has_next %}
+  <a href="?page={{phones.next_page_number}}"><button class="w3-btn w3-cyan" style="float: right;">Next Page</button></a>
+  {% endif %}
+
+{% endblock my_content %}

@@ -1,0 +1,18 @@
+{% extends '../base.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<meta http-equiv="refresh" content="0; url=/" />
+<h1>You are Already logged in</h1>
+{% else %}
+<h1>Login... </h1>
+<form method="POST">
+{% csrf_token %}
+{{ form.as_p}}
+<button class="btn btn-secondary">Login</button><br>
+Not have an account.<a href="/users/register/">Sign Up</a>
+
+</form>
+
+{% endif %}
+{% endblock content %}

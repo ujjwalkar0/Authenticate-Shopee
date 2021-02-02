@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+
+{% block title %} CSEKod.tech {% endblock %}
+
+{% block content %}
+<script>
+    $(document).ready(function(){
+      $('.toast').toast('show');
+    });
+    </script>
+{% if user.is_superuser %}
+<h1>New Orders</h1>
+<ul>
+{% for post in Posts reversed %}
+{% if post.is_approved == False %}
+
+<div class="card">
+    <div class="card-header">
+      Customer with id {{ post.customer_id }} Ordered 
+      <a style="color: blue;" href="http://192.168.100.7:3000/article/{{ post.product_id }}">This Product</a>,
+      <a style="color: blue;" href="http://192.168.100.7:3000/profile/{{ post.customer_id }}">See his Complete Profile</a><br>
+        <button class="w3-btn w3-blue" style="margin-top: -30px ;float: right;"> Quantity :- {{ post.quantity }} </button> 
+    </div>
+    <div class="card-body">
+        <h4 style="color: rgb(255, 174, 0);" > Address </h4>
+      <blockquote class="blockquote mb-0">
+        <p>{{ post.address }} <br> {{ post.is_approved }} <br> order id :- {{ post.id }} </p>
+      </blockquote>
+    </div>
+    <div>
+    <a href="/orders/{{ post.id }}"><button class="w3-btn w3-green" style="width: 150px; float: right;"> Approve </button></a>
+    </div>
+  </div>
+<br /> <br />
+<!-- Address:- <br>
+Quantity :- <br> -->
+{% endif %}
+{% endfor %}
+</ul>
+{% else %}
+{% if user.is_authenticated %}
+<h1> Yours Orders</h1>
+<ul>
+{% for post in Posts reversed %}
+
+{% if user.id == post.customer_id %}
+<div class="card">
+    <div class="card-header">
+      You have ordered 
+      <a style="color: blue;" href="/item/{{ post.product_id }}">This Product</a>,
+        <button class="w3-btn w3-blue" style="float: right;"> Quantity :- {{ post.quantity }} </button> 
+    </div>
+    <!-- <div class="card-body">
+        <h4 style="color: rgb(255, 174, 0);" > Address </h4>
+      <blockquote class="blockquote mb-0">
+        <p>{{ post.address }} <br> {{ post.is_approved }} <br> order id :- {{ post.id }} </p>
+      </blockquote>
+    </div> -->
+    <div>
+      <h4>  Currently I can't show the products here. It will available later. I am working on it.       <a style="color: blue;" href="/item/{{ post.product_id }}">Click here to see the product</a>,
+      </h4>
+    </div>
+  </div>
+<br /> <br />
+{% endif%}
+{% endfor %}
+{% endif%}
+{% endif%}
+
+{% endblock content %}
