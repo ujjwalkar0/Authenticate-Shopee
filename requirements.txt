@@ -89,7 +89,7 @@ scipy==1.6.0
 shortuuid==1.0.1
 six==1.15.0
 sklearn==0.0
-sqlparse==0.4.1
+sqlparse==0.4.2
 sympy==1.7.1
 tensorboard==2.4.1
 tensorboard-plugin-wit==1.8.0
