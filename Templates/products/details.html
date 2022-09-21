@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+
+{{object.title}} | Authenticate Shopee  
+{% endblock %}
+
+{% block content %}
+
+<h2>{{ phones.Product_name }}</h2>
+<hr>
+<!-- <img class="card-img-top" src="/media/{{post.image}}" alt="Card image cap"> -->
+
+<style>
+
+@media (min-width: 750px) {
+  .desktop{
+    margin-left: 25%;
+  }
+
+}
+</style>
+<!--------------------------------------------------------------------------->
+<div class="container my-4">
+  
+    <!--Carousel Wrapper-->
+    <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="false">
+  
+      <!--Controls-->
+      <div class="controls-top">
+        <a class="btn btn-floating" style="float: left;" href="#multi-item-example" data-slide="prev"><i class="fas fa-chevron-left">Prev</i></a>
+        <a class="btn btn-floating" style="float: right;" href="#multi-item-example" data-slide="next"><b>Next</b><i class="fas fa-chevron-right"></i></a>
+      </div>
+      <!--/.Controls-->
+  
+      <!--Indicators-->
+      <ol class="carousel-indicators">
+        <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
+        <li data-target="#multi-item-example" data-slide-to="1"></li>
+        <li data-target="#multi-item-example" data-slide-to="2"></li>
+        <li data-target="#multi-item-example" data-slide-to="3"></li>
+        <li data-target="#multi-item-example" data-slide-to="4"></li>
+        <li data-target="#multi-item-example" data-slide-to="5"></li>
+      </ol>
+      <!--/.Indicators-->
+  
+      <!--Slides-->
+      <div class="carousel-inner container desktop" role="listbox">
+        <!--First slide-->
+        {% if object.image1 %}
+        <div class="carousel-item active">
+            <div class="col-md-6">
+              <div class="card mb-2">
+                  <img class="card-img-top"
+                  src="/media/{{object.image1}}"
+                  alt="Card image cap">
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          <!--/.First slide-->
+          
+        <!--First slide-->
+        <div class="carousel-item">
+            <div class="col-md-6">
+              <div class="card mb-2">
+                <object data="/media/unav.png" type="image/png">
+                  <img class="card-img-top"
+                  src="/media/{{object.image2}}"
+                  alt="Card image cap">
+              </object>
+              </div>
+            </div>
+          </div>
+          <!--/.First slide-->
+          
+        <!--First slide-->
+        <div class="carousel-item">
+            <div class="col-md-6">
+              <div class="card mb-2">
+                <object data="/media/unav.png" type="image/png">
+                  <img class="card-img-top"
+                  src="/media/{{object.image3}}"
+                  alt="Card image cap">
+              </object>
+              </div>
+            </div>
+          </div>
+          <!--/.First slide-->
+          
+        <!--First slide-->
+        <div class="carousel-item">
+            <div class="col-md-6">
+              <div class="card mb-2">
+                <object data="/media/unav.png" type="image/png">
+                  <img class="card-img-top"
+                  src="/media/{{object.image4}}"
+                  alt="Card image cap">
+              </object>
+              </div>
+            </div>
+          </div>
+          <!--/.First slide-->
+          
+        <!--First slide-->
+        <div class="carousel-item">
+            <div class="col-md-6">
+              <div class="card mb-2">
+                <object data="/media/unav.png" type="image/png">
+                  <img class="card-img-top"
+                  src="/media/{{object.image5}}"
+                  alt="Card image cap">
+              </object>
+              </div>
+            </div>
+          </div>
+          <!--/.First slide-->
+
+      </div>
+      <!--/.Slides-->
+  
+    </div>
+    <!--/.Carousel Wrapper-->
+  
+  </div>
+
+
+
+<!--------------------------------------------------------------------------->
+<hr>
+<a class="btn w3-right w3-cyan" href="/search?query={{ phones.Product_name }}">View Similar Products </a>
+
+{% if user_type == 'Customer' %}
+    <button type="button" class="btn btn-primary w3-right" onclick="buyProduct()">
+        Buy
+    </button>
+{% endif %}
+
+<h3><b style="color: blue;">Price :</b> {{ object.price }}  </h3>
+
+<h4><b style="color: blue;">Product By :</b> {{ shop }}  </h4>
+  <hr>
+
+<h3>Description : </h3>
+
+{{ object.desc|safe }} 
+<hr>
+
+<input type="text" value="{{ object.others }}" id="others" style="display:none;"></input>
+<table class="table table-striped" id="others-value">
+    <tbody>
+    </tbody>
+</table>
+
+<br /><br/>
+<a href="{% url "home" %}"><button type="button" class="btn btn-secondary">Back</button></a>
+
+<script type="text/javascript">
+    console.log(document.getElementById("others").value)
+    for (const [key, value] of Object.entries(JSON.parse(document.getElementById("others").value))) {
+        document.getElementById("others-value").innerHTML += `
+        <tr>
+            <th style="font-size:15px; width:20%">${key.split("_").map((e)=> e.substring(0,1).toUpperCase() + e.slice(1).toLowerCase()).join(" ")}</td>
+            <td style="font-size:15px">${value}</td>
+        </tr>
+        `   
+    }
+    function buyProduct() {
+        alert("{{shop_address}}, {{user_address}}, {{product_id}}" )
+    }
+</script>
+
+{% endblock content %}
+

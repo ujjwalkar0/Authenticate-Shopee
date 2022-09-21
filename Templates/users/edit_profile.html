@@ -1,0 +1,15 @@
+{% extends '../base.html' %}
+{% block title %} Edit Profile... {% endblock title %}
+{% block content %}
+
+{% if user.is_authenticated %}
+<h1>Edit Profile... </h1>
+<form method="POST">
+{% csrf_token %}
+{{ form.as_p}}
+<button class="btn btn-secondary">Register</button>
+</form>
+{% else %}
+<h3> You are not loged in</h3>
+{% endif %}
+{% endblock content %}

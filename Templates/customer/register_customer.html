@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if already_exist %}
+        <meta http-equiv="refresh" content="0; url = /business/register_shop/{{shop_id}}" />
+    {% else %}
+        <br><br>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p}}
+            <button type="submit" name="user_id" value="{{user.id}}" class="btn btn-secondary">Submit</button>
+            </form>
+    {% endif %}
+
+{% endblock content %}

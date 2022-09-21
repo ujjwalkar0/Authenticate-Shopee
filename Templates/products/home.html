@@ -1,0 +1,430 @@
+{% extends '../base.html' %}
+
+{% block my_content %}
+
+
+<style>
+    #layout{
+      height: 500px;
+    }
+    @media (max-width:801px)  { 
+      #layout{
+      height: 250px;
+      }
+      #down{
+        margin-bottom: -50px;
+      }
+      #layout-p{
+        font-size:small;
+      }
+      #layout-h1{
+        font-size: larger;
+      }
+      /* #layout-h1-3{
+        font-size: larger;
+        margin-bottom: -30px;
+      } */
+  }
+  </style>
+  
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img id="layout" src="https://firebasestorage.googleapis.com/v0/b/authenticate-shopee.appspot.com/o/image1.jpeg?alt=media&token=5ddd0a18-91d6-4da8-8542-b617997c47ac" alt="First Slide" />
+        <div class="container">
+          <div class="carousel-caption text-center" id="down">
+            <h1 id="layout-h1" style="color: blue; background-color: wheat;"><b>AUTHENTIC SHOPPE ~ Local Se Global</b></h1>
+            <p id="layout-p" style="background-color:cornsilk; color:black">Buy, Sell Products and get partime work </p>
+            {% if not user.is_authenticated %}
+              <p><a class="btn btn-lg btn-primary" href="/user/login/" role="button">Sign In</a></p>
+            {% endif %}
+            <br><br>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img id="layout" src="https://firebasestorage.googleapis.com/v0/b/authenticate-shopee.appspot.com/o/image2.jpeg?alt=media&token=03964188-0642-431f-8c06-a181ecdb8f1c" alt="Second slide">
+        <div class="container">
+          <div class="carousel-caption">
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img id="layout" src="https://firebasestorage.googleapis.com/v0/b/authenticate-shopee.appspot.com/o/image3.jpeg?alt=media&token=1ec55e9d-4dbd-4c7d-a86a-2424422aa8ca" alt="Third slide">
+        <div class="container">
+          <div class="carousel-caption text-right" id="down">
+          </div>
+        </div>
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+
+  {% if user_type == "Business" %}
+
+  <div class="w3-bar w3-light-grey">
+    {% if shop_already_exist %}
+    <a href="/business/register_shop/{{shop_id}}" class="w3-bar-item w3-button">Edit Your Shop Data</a>
+    {% else %}
+    <a href="/business/register_shop" class="w3-bar-item w3-button">Register Your Shop</a>
+   {% endif %}
+   <a href="/api/Business/Phones/" class="w3-bar-item w3-button">Mobiles(API)</a>
+   <a href="/api/Business/Car/" class="w3-bar-item w3-button">Car(API)</a>
+   <a href="/api/Business/others/" class="w3-bar-item w3-button">Other Product(API)</a>
+
+   <a href="/sells" class="w3-bar-item w3-button">Orders</a>
+   
+   <a href="/add_category" class="w3-bar-item w3-button">Add a New Catagory</a>
+   <a href="/new_product" class="w3-button"> Add a New Product </a>
+
+   {% elif user_type == "Customer"  %}
+  
+   {% if customer_registered %}
+   <a href="/customer/update_customer/{{customer_id}}" class="w3-bar-item w3-button">Change your address</a>
+   <a href="/orders" class="w3-bar-item w3-button">My Orders</a>
+
+   {% else %}
+   <a href="/customer/register_customer/" class="w3-bar-item w3-button">Save your address</a>
+  {% endif %}
+{% endif %}
+    </div>
+
+<div id="product"
+  style="margin: 50px 30px">
+</nav>
+
+  <div><h3>Your Products</h3></div>
+
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 ">
+  
+    {% for product in product_list %}
+      <div class="col mb-3">
+    <div class="card card-cascade wider">
+    
+       <!-- Start your project here-->
+     <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
+    
+      <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+          <img class="card-img-top center" src="/media/{{product.image1}}" 
+          style="
+          height: 200px;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;"  
+          alt="{{product.Product_name}} image">
+
+          <div class="card-body ">
+              <a href="/details/{{product.id}}">
+                <h4 class="card-title text-left" ><strong>{{product.title}}</strong></h4>
+              </a>
+              <div>
+              <h5 class="green-text" style="float: left;"> <strong>Price :- {{product.price}}</strong></h5><br>
+            </div>
+              <br />
+              <p class="card-text text-left">{{product.desc|safe|slice:":100"}}........
+              <br />
+                <a style="float: right;" href="/details/{{product.id}}" style="color: blue;"> Read More >> </a></p>
+              <br>
+
+              {% if user_type == "Business"  %}
+                <br>
+              <a href="/delete_product/{{product.id}}"><button class="btn w3-red" style="float: left;">Delete</button></a>
+              <a href="/update_product/{{product.id}}"><button class="btn w3-green" style="float: right;">Edit</button></a>
+              <br><br>
+              {% endif %}
+              <div class="card-footer text-muted text-center mt-4">
+                {{ product.post_date }}
+              </div>
+          
+            </div> 
+            </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
+
+  {% comment %}
+
+  {% elif user_type == "Delivery Boy" %}
+
+  <div class="w3-bar w3-light-grey">
+    {% if pin_no_by_id %}
+    <a href="/ip/update/{{pin_no_by_id}}" class="w3-bar-item w3-button">Change PIN No.</a>
+    {% else %}
+    <a href="/ip/create" class="w3-bar-item w3-button">Register Your PIN No.</a>
+   {% endif %}
+    </div>
+  </div>
+  <div id="product"
+  style="margin: 50px 30px"></nav>
+    <h3> Delivery Requests </h3>
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-lg-1 row-cols-xl-1 ">
+    
+    {% for post in orders %}
+      <div class="col mb-12" style="margin: 10px;">
+    <div class="card card-cascade wider">
+    
+       <!-- Start your project here-->
+     <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
+    
+      <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+          <div class="card-body ">
+    
+              <a href="{% url 'mobiles-details' post.pk %}">
+
+                <!-- <h4 class="card-title text-left" ><strong>{{post.address}}</strong></h4> -->
+              </a>
+              <!-- <div>
+              <h5 class="green-text" style="float: left;"> <strong>Price :- {{post.address}}</strong></h5><br>
+            </div> -->
+            <h3>Address To Deliver :- </h3>
+              <p class="card-text text-left">{{post.address|slice:":100"}}
+              <br />
+
+              <h3>Quantity :- </h3>
+              <p class="card-text text-left">{{post.quantity}}
+              <br />
+                            
+              <div class="card-footer text-muted text-center mt-4">
+               <a class="red-text" href="{{ post.product_id }}">View The Product</a>
+               <a class="btn btn-green w3-right" href="orders/{{post.id}}"> Reply</a>
+
+              </div>
+          
+            </div> 
+            </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
+    
+  
+
+
+  <!------------------------------------------------------------>
+    {% elif user_type == "Customer"  %}
+  
+  <div class="w3-bar w3-light-grey">
+    {% if user.is_authenticated %}
+    {% if pin_no_by_id %}
+    <a href="/ip/update/{{pin_no_by_id}}" class="w3-bar-item w3-button">Change PIN No.</a>
+    <a href="/orders" class="w3-bar-item w3-button">My Orders</a>
+
+    {% else %}
+    <a href="/ip/create" class="w3-bar-item w3-button">Register Your PIN No.</a>
+   {% endif %}
+   {% else %}
+   <h2>Please Login To See products of nearby shops</h2>
+   {% endif %}
+
+
+
+
+
+    </div>
+
+  </div>
+  <div id="product"
+  style="margin: 50px 30px"></nav>
+
+  <!-------------------------- Mobiles ------------------------------------>
+  <h3> Mobiles & Accessories </h3>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 ">
+  
+  {% for product in object_list %}
+    <div class="col mb-3">
+  <div class="card card-cascade wider">
+  
+     <!-- Start your project here-->
+   <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
+  
+    <div class="carousel-inner" role="listbox">
+      <div class="carousel-item active">
+        {% if product.image %}
+        <img class="card-img-top center" src="/media/{{product.image}}" 
+        style="height: 200px;
+        width:100px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;"
+
+        alt="{{product.image}} image">
+        {% else %}
+        <img class="card-img-top center" src="{{product.Product_img_link}}" 
+        style="height: 200px;
+        width:100px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;"
+
+        alt="{{product.Product_name}} image">
+        {% endif %}
+
+        <div class="card-body ">
+  
+            <a href="/details/{{product.id}}">
+              <h4 class="card-title text-left" ><strong>{{product.Product_name}}</strong></h4>
+            </a>
+            <div>
+            <h5 class="green-text" style="float: left;"> <strong>Price :- {{product.Product_price}}</strong></h5><br>
+          </div>
+            <br />
+            <p class="card-text text-left">{{product.feature|slice:":100"}}........
+            <br />
+              <a style="float: right;" href="/details/{{product.id}}" style="color: blue;"> Read More >> </a></p>
+            <br>
+            
+            
+            <div class="card-footer text-muted text-center mt-4">
+              {{ product.product_date }}
+            </div>
+        
+          </div> 
+          </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  {% endfor %}
+  </div>
+  
+  <!--------------------------------------------------------------/>
+  
+  <!*--------------------  Cars  -------------------------------->
+  <br>
+  <h3> Cars </h3>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 ">
+  
+    {% for post in cars %}
+      <div class="col mb-3">
+    <div class="card card-cascade wider">
+    
+       <!-- Start your project here-->
+     <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
+    
+      <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+
+          <img class="card-img-top" src="/media/{{post.image}}"
+          alt="Card image cap">
+          <div class="card-body ">
+    
+              <a href="{% url 'car-details' post.pk %}">
+                <h4 class="card-title text-left" ><strong>{{post.name}}</strong></h4>
+              </a>
+              <div>
+              <h5 class="blue-text"> <strong>Price :- {{post.selling_price}}</strong></h5>
+              <h5 class="blue-text"> <strong>Year :- {{post.year}}</strong></h5>
+              <h5 class="blue-text"> <strong>Km Driven :- {{post.km_driven}}</strong></h5>
+              <h5 class="blue-text"> <strong>Fuel :- {{post.fuel}}</strong></h5>
+              <h5 class="blue-text"> <strong>Seller Type :- {{post.seller_type}}</strong></h5>
+              <h5 class="blue-text"> <strong>Transmission :- {{post.transmission}}</strong></h5>
+              <h5 class="blue-text"> <strong>Owner :- {{post.owner}}</strong></h5>
+            </div>
+              <br />
+
+                {% if user.is_superuser %}
+                <br>
+              <a href="{% url 'car_delete' post.pk %}"><button class="btn w3-red" style="float: left;">Delete</button></a>
+              <a href="{% url 'car_update' post.pk %}"><button class="btn w3-green" style="float: right;">Edit</button></a>
+              <br><br>
+      
+              {% endif %}
+              
+              <div class="card-footer text-muted text-center mt-4">
+                {{ post.post_date }}
+              </div>
+          
+            </div> 
+            </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
+    
+      <!--------------------  Others  -------------------------------->
+<h3>Other Products</h3>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 ">
+
+        {% for post in products %}
+          <div class="col mb-4">
+        <div class="card card-cascade wider">
+        
+           <!-- Start your project here-->
+         <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
+        
+          <div class="carousel-inner" role="listbox">
+            <div class="carousel-item active">
+  
+              <img class="card-img-top" src="/media/{{post.image}}"
+              alt="Card image cap">
+  
+              <div class="card-body ">
+        
+                  <a href="{% url 'article-details' post.pk %}">
+                    <h4 class="card-title text-left" ><strong>{{post.title}}</strong></h4>
+                  </a>
+                  <div>
+                  <h5 class="green-text" style="float: left;"> <strong>Price :- {{post.price}}</strong></h5>
+                  <h5 class="green-text" style="float: right;"> <strong>Stock :- {{post.stock}}</strong></h5></div>
+                  <br />
+                  <a href="{% url 'catagoryview' post.catagory %}">
+                    <h5 class="blue-text pb-2 text-right"><strong>{{post.catagory}}</strong></h5>
+                  </a>
+                  <p class="card-text text-left">{{post.body|slice:":100"}}........
+                  <br />
+                    <a style="float: right;" href="{% url 'article-details' post.pk %}" style="color: blue;"> Read More >> </a></p>
+      
+    {% if user.is_superuser %}   
+                    <br>
+                  <a href="{% url 'delete' post.pk %}"><button class="btn w3-red" style="float: left;">Delete</button></a>
+                  <a href="{% url 'update' post.pk %}"><button class="btn w3-green" style="float: right;">Edit</button></a>
+                  <br><br>
+    {% endif %}
+       
+                  
+                  <div class="card-footer text-muted text-center mt-4">
+                    {{ post.post_date }}
+                  </div>
+              
+                </div> 
+                </div>
+          </div>
+        </div>
+        </div>
+        </div>
+        {% endfor %}
+        </div>
+  <!--------------------------------------------------------------->
+  
+  <!-- {% if page_obj.has_previous %}
+  <a href="?page={{page_obj.previous_page_number}}"><button class="w3-btn w3-yellow" style="float: left;">Previous Page</button></a>
+  {% endif %}
+  {% if page_obj.has_next %}
+  <a href="?page={{page_obj.next_page_number}}"><button class="w3-btn w3-cyan" style="float: right;">Next Page</button></a>
+  {% endif %} -->
+  
+{% endif %} {% endcomment %}
+
+{% endblock my_content %}

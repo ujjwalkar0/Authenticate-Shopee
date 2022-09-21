@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    #id_others{
+        display: none;
+    }
+</style>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p}}
+    <div id="additional_fields"></div>
+    <button id="submit" type="submit" class="btn btn-secondary">Submit</button>
+</form>
+
+<!----------------------: Javascript for CKEDITOR :--------------------------->
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<script>
+
+const others = {};
+document.getElementById("id_catagory").addEventListener("change", myFunction);
+document.getElementById("id_others").value = `{}`
+
+function setOthers(htmlobj){
+    others[htmlobj.name] = htmlobj.value;
+    document.getElementById("id_others").value = JSON.stringify(others)
+
+}
+function myFunction() {
+    document.getElementById("additional_fields").innerHTML = ``
+    fetch(`{{hostname}}${document.getElementById("id_catagory").value}`)
+    .then((response) => response.json())
+    .then((data) => {
+        // console.log(data);
+        for (const [key, value] of Object.entries(data)) {
+            if (key!="name"){
+                console.log(key, value);
+                if (value["type"] == "Text") {
+                    document.getElementById("additional_fields").innerHTML += `
+                        <input type="text" name="${value["name"]}" placeholder="${value["placeholder"]!=undefined?value["placeholder"]:value["name"].split("_").map((e)=>e.charAt(0).toUpperCase()+e.slice(1)).join(" ")}" class="form-control" onchange="setOthers(this)"></input><br>
+                    `
+                 }
+
+                 if (value["type"] == "Numeric") {
+                    document.getElementById("additional_fields").innerHTML += `
+                        <input type="number" name="${value["name"]}" placeholder="${value["placeholder"]!=undefined?value["placeholder"]:value["name"].split("_").map((e)=>e.charAt(0).toUpperCase()+e.slice(1)).join(" ")}" class="form-control" onchange="setOthers(this)"></input><br>
+                    `
+                 }
+
+                 if (value["type"] == "Category") {
+                    document.getElementById("additional_fields").innerHTML += `
+                    <select name = ${value["name"]} class="form-control"  onchange="setOthers(this)">
+                        <option class="option" value="">Select one...</option>
+                        ${value['value'].split(",").map((options)=> `
+                            <option class="option" value=${options}>${options.replaceAll('_', ' ')}</option>
+                        `)}
+                    </select> 
+                    <br>
+                    `
+                 }
+
+            }
+        }
+        // for(var i = 0; i < data.length; i++) {
+        //     console.log(data[i], i);
+        // }
+    });
+  
+//   alert(document.getElementById("id_catagory").value)
+}
+
+</script>
+{% endblock content %}

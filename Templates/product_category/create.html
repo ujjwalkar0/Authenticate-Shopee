@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div>
+    <input class="form-control" placeholder="Category Name..." onchange=setField(this)></input><br>
+    <b> Default fields for this categories are : 
+    <pre>
+    1. Title of The Product
+    2. Five Images 
+    3. Stock
+    4. Price 
+    5. Desc</pre>
+    You may add new fields if you want...
+    <br><br>
+    </b>
+    <table id="field" width="100%">
+        <tbody>
+            <tr>
+                <td><input name="Field" data-count="1" class="form-control" placeholder="Field Name..." onchange="addData(this, 1)"></td>
+                <td>
+                    <select name="Category" data-count="1" class="input form-control" onchange="addData(this, 1)">
+                        <option class="option" value="">Select one...</option>
+                        <option class="option" value="Category">Category</option>
+                        <option class="option" value="Text">Text</option>
+                        <option class="option" value="Numeric">Numeric</option>
+                    </select> 
+                </td>
+                <td>
+                    <div data-count="1" id="category1">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-info" onclick=AddField()> Add New Field</button>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-dark" onclick=Submit()> <b>Submit</b> </button>
+    </div>
+
+</div>
+
+<script>
+    const data = {}
+    var field = {};
+    var cell_no = 1
+
+    const setField = (htmlobj) => {
+        htmlobj.value = htmlobj.value.substring(0,1).toUpperCase() + htmlobj.value.slice(1).toLowerCase();
+        data["name"] = htmlobj.value;
+    }
+    const addData = (htmlobj, count) => {
+        console.log(htmlobj.value, htmlobj.name, count);
+
+        if (data["field"+String(count)] === undefined){
+            data["field"+String(count)] = {}
+        }
+
+        if (htmlobj.name=="Field"){
+            data["field"+String(count)]["name"] = htmlobj.value;
+        }
+        else if (htmlobj.name=="Category"){
+            console.log(htmlobj.value, htmlobj.name);
+            if (htmlobj.value=="Category"){
+                document.getElementById("category"+String(cell_no)).innerHTML= `<input name="Field_Name" class="form-control" onchange="addData(this, ${cell_no})" placeholder="Write Fields Seperated by coma(,)">`
+
+                data["field"+String(count)]["type"] = "Category";
+
+                // field["type"] = "Category";
+            }
+            else if (htmlobj.value=="Text"){
+                document.getElementById("category"+String(cell_no)).innerHTML= `<input name="Placeholder" class="form-control" placeholder="Write a Placeholder" onchange="addData(this, ${cell_no})">`
+                // field["type"] = "Text";
+
+                data["field"+String(count)]["type"] = "Text";
+
+            }
+            else if (htmlobj.value=="Numeric"){
+                document.getElementById("category"+String(cell_no)).innerHTML= `<input name="Placeholder" class="form-control" placeholder="Write a Placeholder" onchange="addData(this, ${cell_no})">`
+                // field["type"] = "Text";
+
+                data["field"+String(count)]["type"] = "Numeric";
+
+            }
+
+            else{
+                document.getElementById("category"+String(cell_no)).innerHTML= ``
+            }
+        }
+        else if (htmlobj.name=="Field_Name" || htmlobj.name=="Placeholder"){
+            // field["value"] = htmlobj.value;
+            data["field"+String(count)]["value"] = htmlobj.value;
+        }
+
+        // data["field"+String(cell_no)] = field;
+    }
+
+    function addCategoryOrText(params) {
+        console.log(params);
+    }
+
+    const AddField = () => {
+        console.log(data);
+        cell_no+=1;
+        const field = document.getElementById("field")
+        const row = field.insertRow(-1);
+
+        id_cell0 = row.insertCell(0);
+        id_cell0.innerHTML = `<input name="Field" class="form-control" placeholder="Field Name..." onchange="addData(this, ${cell_no})">`;
+        
+        id_cell1 = row.insertCell(1);
+
+        id_cell2 = row.insertCell(2);
+        id_cell2.innerHTML = `<div id="category${cell_no}">`
+
+        id_cell1.innerHTML = `
+        <select name="Category" class="input form-control" onchange="addData(this, ${cell_no})">
+            <option class="option" value="">Select one...</option>
+            <option class="option" value="Category">Category</option>
+            <option class="option" value="Text">Text</option>
+            <option class="option" value="Numeric">Numeric</option>
+        </select>`;
+    }
+    const Submit = async () => {
+        if (data["name"]===undefined){
+            alert("Please enter the name of the category")
+        }
+        else{
+            const response = await fetch("{{hostname}}",{
+            method:"POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body:JSON.stringify(data)
+            })
+
+            const content = await response.json()
+            alert(content.msg)
+        }
+    }
+</script>
+
+{% endblock %}
