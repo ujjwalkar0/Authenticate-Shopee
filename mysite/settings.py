@@ -13,7 +13,7 @@ SECRET_KEY = 'rux&$rtzb7)kf5=2sfvr8y8d141cn-ov2kk$0-9z%87a2*%14*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['authenticateshopee.herokuapp.com', '127.0.0.1',]
 
 
 # Application definition
