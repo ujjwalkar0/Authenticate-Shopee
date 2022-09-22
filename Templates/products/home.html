@@ -72,41 +72,38 @@
     </a>
   </div>
 
-
   {% if user_type == "Business" %}
-
-  <div class="w3-bar w3-light-grey">
-    {% if shop_already_exist %}
-    <a href="/business/register_shop/{{shop_id}}" class="w3-bar-item w3-button">Edit Your Shop Data</a>
-    {% else %}
-    <a href="/business/register_shop" class="w3-bar-item w3-button">Register Your Shop</a>
-   {% endif %}
-   <a href="/api/Business/Phones/" class="w3-bar-item w3-button">Mobiles(API)</a>
-   <a href="/api/Business/Car/" class="w3-bar-item w3-button">Car(API)</a>
-   <a href="/api/Business/others/" class="w3-bar-item w3-button">Other Product(API)</a>
-
-   <a href="/sells" class="w3-bar-item w3-button">Orders</a>
-   
-   <a href="/add_category" class="w3-bar-item w3-button">Add a New Catagory</a>
-   <a href="/new_product" class="w3-button"> Add a New Product </a>
-
+      <div class="w3-bar w3-light-grey">
+      {% if shop_already_exist %}
+          <a href="/business/register_shop/{{shop_id}}" class="w3-bar-item w3-button">Edit Your Shop Data</a>
+      {% else %}
+          <a href="/business/register_shop" class="w3-bar-item w3-button">Register Your Shop</a>
+      {% endif %}
+          <a href="/sells" class="w3-bar-item w3-button">Orders</a>
+          <a href="/add_category" class="w3-bar-item w3-button">Add a New Catagory</a>
+          <a href="/new_product" class="w3-button"> Add a New Product </a>
    {% elif user_type == "Customer"  %}
-  
-   {% if customer_registered %}
-   <a href="/customer/update_customer/{{customer_id}}" class="w3-bar-item w3-button">Change your address</a>
-   <a href="/orders" class="w3-bar-item w3-button">My Orders</a>
-
-   {% else %}
-   <a href="/customer/register_customer/" class="w3-bar-item w3-button">Save your address</a>
-  {% endif %}
-{% endif %}
+      {% if customer_registered %}
+          <a href="/customer/update_customer/{{customer_id}}" class="w3-bar-item w3-button">Change your address</a>
+          <a href="/orders" class="w3-bar-item w3-button">My Orders</a>
+      {% else %}
+          <a href="/customer/register_customer/" class="w3-bar-item w3-button">Save your address</a>
+      {% endif %}
+    {% elif user_type == "Delivery Boy" %}  
+        {% if deliveryagent_registered %}
+            <a href="/delivery/update/{{deliveryagent_id}}" class="w3-bar-item w3-button">Change your Mobile Number</a>
+            <a href="/orders]" class="w3-bar-item w3-button">My Orders</a>   
+        {% else %}
+            <a href="/delivery/create/" class="w3-bar-item w3-button">Register your mobile number</a>
+        {% endif %}
+    {% endif %}
     </div>
 
 <div id="product"
   style="margin: 50px 30px">
 </nav>
 
-  <div><h3>Your Products</h3></div>
+  <div><h3>{{products}}</h3></div>
 
   <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 ">
   
@@ -158,273 +155,106 @@
     </div>
     {% endfor %}
     </div>
-
-  {% comment %}
-
-  {% elif user_type == "Delivery Boy" %}
-
-  <div class="w3-bar w3-light-grey">
-    {% if pin_no_by_id %}
-    <a href="/ip/update/{{pin_no_by_id}}" class="w3-bar-item w3-button">Change PIN No.</a>
-    {% else %}
-    <a href="/ip/create" class="w3-bar-item w3-button">Register Your PIN No.</a>
-   {% endif %}
-    </div>
-  </div>
-  <div id="product"
-  style="margin: 50px 30px"></nav>
-    <h3> Delivery Requests </h3>
-    <div class="row row-cols-1 row-cols-sm-1 row-cols-lg-1 row-cols-xl-1 ">
-    
-    {% for post in orders %}
-      <div class="col mb-12" style="margin: 10px;">
-    <div class="card card-cascade wider">
-    
-       <!-- Start your project here-->
-     <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
-    
-      <div class="carousel-inner" role="listbox">
-        <div class="carousel-item active">
-          <div class="card-body ">
-    
-              <a href="{% url 'mobiles-details' post.pk %}">
-
-                <!-- <h4 class="card-title text-left" ><strong>{{post.address}}</strong></h4> -->
-              </a>
-              <!-- <div>
-              <h5 class="green-text" style="float: left;"> <strong>Price :- {{post.address}}</strong></h5><br>
-            </div> -->
-            <h3>Address To Deliver :- </h3>
-              <p class="card-text text-left">{{post.address|slice:":100"}}
-              <br />
-
-              <h3>Quantity :- </h3>
-              <p class="card-text text-left">{{post.quantity}}
-              <br />
-                            
-              <div class="card-footer text-muted text-center mt-4">
-               <a class="red-text" href="{{ post.product_id }}">View The Product</a>
-               <a class="btn btn-green w3-right" href="orders/{{post.id}}"> Reply</a>
-
-              </div>
-          
-            </div> 
-            </div>
-      </div>
-    </div>
-    </div>
-    </div>
-    {% endfor %}
-    </div>
-    
-  
-
-
-  <!------------------------------------------------------------>
-    {% elif user_type == "Customer"  %}
-  
-  <div class="w3-bar w3-light-grey">
-    {% if user.is_authenticated %}
-    {% if pin_no_by_id %}
-    <a href="/ip/update/{{pin_no_by_id}}" class="w3-bar-item w3-button">Change PIN No.</a>
-    <a href="/orders" class="w3-bar-item w3-button">My Orders</a>
-
-    {% else %}
-    <a href="/ip/create" class="w3-bar-item w3-button">Register Your PIN No.</a>
-   {% endif %}
-   {% else %}
-   <h2>Please Login To See products of nearby shops</h2>
-   {% endif %}
-
-
-
-
-
-    </div>
-
-  </div>
-  <div id="product"
-  style="margin: 50px 30px"></nav>
-
-  <!-------------------------- Mobiles ------------------------------------>
-  <h3> Mobiles & Accessories </h3>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 ">
-  
-  {% for product in object_list %}
-    <div class="col mb-3">
-  <div class="card card-cascade wider">
-  
-     <!-- Start your project here-->
-   <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
-  
-    <div class="carousel-inner" role="listbox">
-      <div class="carousel-item active">
-        {% if product.image %}
-        <img class="card-img-top center" src="/media/{{product.image}}" 
-        style="height: 200px;
-        width:100px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;"
-
-        alt="{{product.image}} image">
-        {% else %}
-        <img class="card-img-top center" src="{{product.Product_img_link}}" 
-        style="height: 200px;
-        width:100px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;"
-
-        alt="{{product.Product_name}} image">
-        {% endif %}
-
-        <div class="card-body ">
-  
-            <a href="/details/{{product.id}}">
-              <h4 class="card-title text-left" ><strong>{{product.Product_name}}</strong></h4>
-            </a>
-            <div>
-            <h5 class="green-text" style="float: left;"> <strong>Price :- {{product.Product_price}}</strong></h5><br>
-          </div>
-            <br />
-            <p class="card-text text-left">{{product.feature|slice:":100"}}........
-            <br />
-              <a style="float: right;" href="/details/{{product.id}}" style="color: blue;"> Read More >> </a></p>
-            <br>
-            
-            
-            <div class="card-footer text-muted text-center mt-4">
-              {{ product.product_date }}
-            </div>
-        
-          </div> 
-          </div>
-    </div>
-  </div>
-  </div>
-  </div>
-  {% endfor %}
-  </div>
-  
-  <!--------------------------------------------------------------/>
-  
-  <!*--------------------  Cars  -------------------------------->
-  <br>
-  <h3> Cars </h3>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 ">
-  
-    {% for post in cars %}
-      <div class="col mb-3">
-    <div class="card card-cascade wider">
-    
-       <!-- Start your project here-->
-     <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
-    
-      <div class="carousel-inner" role="listbox">
-        <div class="carousel-item active">
-
-          <img class="card-img-top" src="/media/{{post.image}}"
-          alt="Card image cap">
-          <div class="card-body ">
-    
-              <a href="{% url 'car-details' post.pk %}">
-                <h4 class="card-title text-left" ><strong>{{post.name}}</strong></h4>
-              </a>
-              <div>
-              <h5 class="blue-text"> <strong>Price :- {{post.selling_price}}</strong></h5>
-              <h5 class="blue-text"> <strong>Year :- {{post.year}}</strong></h5>
-              <h5 class="blue-text"> <strong>Km Driven :- {{post.km_driven}}</strong></h5>
-              <h5 class="blue-text"> <strong>Fuel :- {{post.fuel}}</strong></h5>
-              <h5 class="blue-text"> <strong>Seller Type :- {{post.seller_type}}</strong></h5>
-              <h5 class="blue-text"> <strong>Transmission :- {{post.transmission}}</strong></h5>
-              <h5 class="blue-text"> <strong>Owner :- {{post.owner}}</strong></h5>
-            </div>
-              <br />
-
-                {% if user.is_superuser %}
-                <br>
-              <a href="{% url 'car_delete' post.pk %}"><button class="btn w3-red" style="float: left;">Delete</button></a>
-              <a href="{% url 'car_update' post.pk %}"><button class="btn w3-green" style="float: right;">Edit</button></a>
-              <br><br>
-      
-              {% endif %}
-              
-              <div class="card-footer text-muted text-center mt-4">
-                {{ post.post_date }}
-              </div>
-          
-            </div> 
-            </div>
-      </div>
-    </div>
-    </div>
-    </div>
-    {% endfor %}
-    </div>
-    
-      <!--------------------  Others  -------------------------------->
-<h3>Other Products</h3>
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 ">
-
-        {% for post in products %}
-          <div class="col mb-4">
-        <div class="card card-cascade wider">
-        
-           <!-- Start your project here-->
-         <div id="carousel-example-multi" class="carousel slide carousel-multi-item v-2" data-ride="carousel">
-        
-          <div class="carousel-inner" role="listbox">
-            <div class="carousel-item active">
-  
-              <img class="card-img-top" src="/media/{{post.image}}"
-              alt="Card image cap">
-  
-              <div class="card-body ">
-        
-                  <a href="{% url 'article-details' post.pk %}">
-                    <h4 class="card-title text-left" ><strong>{{post.title}}</strong></h4>
-                  </a>
-                  <div>
-                  <h5 class="green-text" style="float: left;"> <strong>Price :- {{post.price}}</strong></h5>
-                  <h5 class="green-text" style="float: right;"> <strong>Stock :- {{post.stock}}</strong></h5></div>
-                  <br />
-                  <a href="{% url 'catagoryview' post.catagory %}">
-                    <h5 class="blue-text pb-2 text-right"><strong>{{post.catagory}}</strong></h5>
-                  </a>
-                  <p class="card-text text-left">{{post.body|slice:":100"}}........
-                  <br />
-                    <a style="float: right;" href="{% url 'article-details' post.pk %}" style="color: blue;"> Read More >> </a></p>
-      
-    {% if user.is_superuser %}   
-                    <br>
-                  <a href="{% url 'delete' post.pk %}"><button class="btn w3-red" style="float: left;">Delete</button></a>
-                  <a href="{% url 'update' post.pk %}"><button class="btn w3-green" style="float: right;">Edit</button></a>
-                  <br><br>
+    {% if user_type == "Delivery Boy" %}  
+      {% if deliveryagent_registered %}
+        <input id="orders" type="text" placeholder="Enter Area Pin No" class="form-control"/>
+        <br><br><br>
+        <div id="orders_list"></div>
+      {% endif %}
     {% endif %}
-       
-                  
-                  <div class="card-footer text-muted text-center mt-4">
-                    {{ post.post_date }}
-                  </div>
-              
-                </div> 
-                </div>
-          </div>
-        </div>
-        </div>
-        </div>
-        {% endfor %}
-        </div>
-  <!--------------------------------------------------------------->
-  
-  <!-- {% if page_obj.has_previous %}
-  <a href="?page={{page_obj.previous_page_number}}"><button class="w3-btn w3-yellow" style="float: left;">Previous Page</button></a>
-  {% endif %}
-  {% if page_obj.has_next %}
-  <a href="?page={{page_obj.next_page_number}}"><button class="w3-btn w3-cyan" style="float: right;">Next Page</button></a>
-  {% endif %} -->
-  
-{% endif %} {% endcomment %}
+    
+    <script type="text/javascript">
+      const orders_list = document.getElementById("orders_list")
+      const orders = document.getElementById("orders")
+      orders.addEventListener("blur", async function() { 
+          // alert("submitted")
+          const response = await fetch("{{hostname}}",{
+              method:"POST",
+              headers: {
+                  "Content-Type": "application/json",
+                  "X-CSRFToken": "{{ csrf_token }}"
+                  },
+              body:orders.value
+            })
+            const result = await response.json()            
+            
+            orders_list.innerHTML = ``
 
+            for (var i = 0; i < result.length; i++) {
+              orders_list.innerHTML += `
+              <div class="card">
+                <div class="row">
+                  <div class="col-md-4">
+                    <img height="100%" class="card-img-top" src=${result[i]["product_image"]} alt="Card image cap">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                    <h5 class="card-title">${result[i]['product_name']}</h5>
+                    <p class="card-text">
+                      <div class="row">
+                      <div class="col-md-6">
+                        <table class="table">
+                          <tr>
+                            <th width="45%">Customer Name</th>
+                            <td>${result[i]['customer_name']}</td>   
+                          </tr>
+                          <tr>
+                            <th width="45%">Customer Phone No</th>
+                            <td>${result[i]['customer_phone_no']}</td>   
+                          </tr>
+                          <tr>
+                            <th width="45%">Customer Address</th>
+                            <td>${result[i]['customer_address']}</td>   
+                          </tr>
+                        </table>
+                      </div>
+                      <div class="col-md-6">
+                        <table class="table">
+                          <tr>
+                            <th width="45%">Shop Name</th>
+                            <td>${result[i]['shop_name']}</td>   
+                          </tr>
+                          <tr>
+                            <th width="45%">Shop Contact Number</th>
+                            <td>${result[i]['shop_contact_number']}</td>   
+                          </tr>
+                          <tr>
+                            <th width="45%">Shop Address</th>
+                            <td>${result[i]['shop_address']}</td>   
+                          </tr>
+                        </table>
+                      </div>
+                      </div>
+                    </p>
+                    <p><button class="w3-button btn-success" id="take-delivery" value=${result[i]['order_id']}>Take Delivery</button></p>
+                  </div>
+                </div>
+                </div>
+              `
+            }
+
+            const take_delivery = document.getElementById('take-delivery');
+
+            take_delivery.addEventListener('click', async () => { 
+                  // console.log(take_delivery.value, "{{user}}")
+
+                  const response = await fetch("{{accept}}",{
+                  method:"POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      "X-CSRFToken": "{{ csrf_token }}"
+                      },
+                  body:JSON.stringify({
+                      "order_id": take_delivery.value,
+                      "deliveryagent":  "{{user}}"
+                  })
+                })
+                const result = await response.json()            
+
+             }); 
+
+         })
+
+        
+    </script>
 {% endblock my_content %}

@@ -7,6 +7,7 @@ from business.models import Shop
 from products.forms import ProductForm
 from django.http import JsonResponse
 from rest_framework import routers, serializers, viewsets,permissions
+from delivery.models import DeliveryAgent
 
 import json
 
@@ -18,8 +19,12 @@ class HomeView(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(HomeView,self).get_context_data(*args, **kwargs)
-
         context["product_list"] = Product.objects.all()
+
+        hostname = f"http://{self.request.get_host()}/delivery/orders/"
+        if self.request.is_secure():
+            hostname = f"https://{self.request.get_host()}/delivery/orders/"
+
 
         print(self.request.user.is_authenticated)
 
@@ -37,8 +42,24 @@ class HomeView(ListView):
                     context["product_list"] = Product.objects.filter(Pin_No=Customer.objects.get(name=self.request.user).pin_no)
                     context["customer_registered"] = len(Customer.objects.filter(name=self.request.user))
                     context["customer_id"] = Customer.objects.filter(name=self.request.user)[0].id
-                if (context["user_type"]=="Business"):
+                    context["products"] = "Product List"
+                
+                elif (context["user_type"]=="Business"):
                     context["product_list"] = Product.objects.filter(user_id=self.request.user)
+                    context["products"] = "Your Product"
+                
+                elif (context["user_type"]=="Delivery Boy"):
+                    accept = f"http://{self.request.get_host()}/orders/accept/"
+                    if self.request.is_secure():
+                        accept = f"https://{self.request.get_host()}/orders/accept/"
+
+                    context["product_list"] = None
+                    context["products"] = ""
+                    context["hostname"] = hostname
+                    context["accept"] = accept
+                    context["deliveryagent_registered"] = len(DeliveryAgent.objects.filter(user_id=self.request.user))!=0
+                    context["deliveryagent_id"] = DeliveryAgent.objects.filter(user_id=self.request.user).first().id
+            
             except:
                 ...
         return context
@@ -48,13 +69,20 @@ class ProductDetailView(DetailView):
     template_name = "products/details.html"
 
     def get_context_data(self, *args, **kwargs):
-        context = super(ProductDetailView, self).get_context_data(*args, **kwargs)
-        context["shop"] = Shop.objects.get(user_id=kwargs["object"].user_id).shop_name
-        context["shop_address"] = Shop.objects.get(user_id=kwargs["object"].user_id).address
 
+        hostname = f"http://{self.request.get_host()}/orders/add/"
+        if self.request.is_secure():
+            hostname = f"https://{self.request.get_host()}/orders/add/"
+
+        context = super(ProductDetailView, self).get_context_data(*args, **kwargs)
+
+        context["shop"] = Shop.objects.get(user_id=kwargs["object"].user_id).shop_name
+        context["shop_id"] = Shop.objects.get(user_id=kwargs["object"].user_id).id
+        context['hostname'] = hostname
         context["user_type"] = Users.objects.get(id=self.request.user.id).user_type
+
         if (context["user_type"]=="Customer"):
-            context["user_address"] = Customer.objects.filter(name=self.request.user)[0].address
+            context["customer_id"] = Customer.objects.filter(name=self.request.user)[0].id
             context["product_id"] = self.kwargs['pk']
 
         return context

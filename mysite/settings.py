@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'business',
     'rest_framework',
     'customer',
+    'orders',
+    'delivery',
 
 ]
 

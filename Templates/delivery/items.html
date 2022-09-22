@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for i in object_list %}
+<div class="card">
+    <div class="row">
+    <div class="col-md-4">
+        <img height="100%" class="card-img-top" src="{{hostname}}media/{{i.order.product.image1}}" alt="{{hostname}}media/{{i.order.product.image1}}">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+        <h5 class="card-title">{{i.order.product.title}}</h5>
+        <p class="card-text">
+          <div class="row">
+          <div class="col-md-6">
+            <table class="table">
+              <tr>
+                <th width="45%">Customer Name</th>
+                <td>{{i.order.customer.name.first_name}} {{i.order.customer.name.last_name}}</td>   
+              </tr>
+              <tr>
+                <th width="45%">Customer Phone No</th>
+                <td>{{i.order.customer.phone_no}} </td>   
+              </tr>
+              <tr>
+                <th width="45%">Customer Address</th>
+                <td>{{i.order.customer.address}}</td>   
+              </tr>
+            </table>
+          </div>
+          <div class="col-md-6">
+            <table class="table">
+              <tr>
+                <th width="45%">Shop Name</th>
+                <td>{{i.order.shop.shop_name}}</td>   
+              </tr>
+              <tr>
+                <th width="45%">Shop Contact Number</th>
+                <td>{{i.order.shop.phone_no}}</td>   
+              </tr>
+              <tr>
+                <th width="45%">Shop Address</th>
+                <td>{{i.order.shop.address}}</td>   
+              </tr>
+            </table>
+          </div>
+          </div>
+        </p>
+      </div>
+    </div>
+    </div>
+</div>
+<br><br>    
+    {% endfor %}
+    <!-- {{ i.order.product.title }}     -->
+
+{% endblock content %}

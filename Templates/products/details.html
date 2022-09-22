@@ -165,8 +165,26 @@
         </tr>
         `   
     }
-    function buyProduct() {
-        alert("{{shop_address}}, {{user_address}}, {{product_id}}" )
+    async function buyProduct() {
+        const data = {
+            "shop_id": "{{shop_id}}",
+            "customer_id" : "{{customer_id}}", 
+            "product_id" : "{{product_id}}"
+        }
+
+        console.log(data)
+
+        const response = await fetch("{{hostname}}",{
+            method:"POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body:JSON.stringify(data)
+            })
+
+        const content = await response.json()
+        alert(content.msg)
     }
 </script>
 
