@@ -52,7 +52,7 @@ function myFunction() {
                  if (value["type"] == "Category") {
                     document.getElementById("additional_fields").innerHTML += `
                     <select name = ${value["name"]} class="form-control"  onchange="setOthers(this)">
-                        <option class="option" value="">Select one...</option>
+                        <option class="option" value="">Select ${value["name"]}...</option>
                         ${value['value'].split(",").map((options)=> `
                             <option class="option" value=${options}>${options.replaceAll('_', ' ')}</option>
                         `)}

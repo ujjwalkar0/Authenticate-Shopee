@@ -17,6 +17,7 @@ class ShopUpdateView(UpdateView):
 class ShopCreateView(LoginRequiredMixin, CreateView):
     form_class = ShopForm
     template_name = "business/register_shop.html"
+    success_url = "/"
     # success_url = reverse_lazy('home', success_url = reverse_lazy('home',kwargs = {'pk': 'idnumber'}))
 
     def get_context_data(self, **kwargs):

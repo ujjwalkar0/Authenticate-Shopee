@@ -140,6 +140,7 @@ def product_category(request):
 
 def get_category_details(request, pk):
     if request.method == "GET":
+        print(json.loads(Categories.objects.get(id=pk).fields[2:-1]))
         return JsonResponse(json.loads(Categories.objects.get(id=pk).fields[2:-1]))
 
 def new_product(request):
