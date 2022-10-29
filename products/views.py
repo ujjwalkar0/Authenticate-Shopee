@@ -4,7 +4,7 @@ from customer.models import Customer
 from products.models import *
 from users.models import Users
 from business.models import Shop
-from products.forms import ProductForm
+from products.forms import *
 from django.http import JsonResponse
 from rest_framework import routers, serializers, viewsets,permissions
 from delivery.models import DeliveryAgent
@@ -234,6 +234,29 @@ class HomeView(ListView):
                 ...
         return context
 
+def predicted_price(request):
+    if request.method == "GET":
+        return render(request, "products/predict.html", {"form": LaptopForm})
+    elif request.method == "POST":
+        print(request.POST.get("laptop"))
+
+        test = pd.DataFrame({
+                "Processor" : [decode["Processor"][request.POST.get("processor")]],
+                "RAM" : [decode["RAM"][request.POST.get("ram")]],
+                "Operating System":  [decode["Operating System"][request.POST.get("os")]],
+                "Storage" : [decode["Storage"][request.POST.get("storage")]],
+                "Display" : [decode["Display"][request.POST.get("display")]],
+                "Warranty" : [decode["Warranty"][request.POST.get("warranty")]]
+            })
+
+        print(test)
+        with open(os.path.join(value, 'models', 'LaptopPricePrediction.pk'), 'rb') as f:
+            rfr = pk.load(f)
+
+        predicted_price = round(rfr.predict(test)[0], 2)
+
+        return render(request, "products/predict.html", {"predicted_price": predicted_price})
+
 class ProductDetailView(DetailView):
     model = Product
     template_name = "products/details.html"
@@ -255,7 +278,6 @@ class ProductDetailView(DetailView):
         except:
             context["user_type"] = None 
 
-        # print(context["product"].catagory.name)
 
         if context["product"].catagory.name=="Laptop":
             try:

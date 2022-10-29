@@ -11,5 +11,5 @@ urlpatterns = [
     path('details/<int:pk>/', ProductDetailView.as_view()),
     path('update_product/<int:pk>/', UpdateProductView.as_view()),
     path('delete_product/<int:pk>/', DeleteProductView.as_view()),
-    # path('new_product/', new_product),
+    path('predict/', predicted_price),
 ]

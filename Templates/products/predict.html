@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if predicted_price %}
+    Predicted Price: {{ predicted_price }}
+{% else %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit"></button>
+</form>
+{% endif %}
+
+{% endblock content %}
