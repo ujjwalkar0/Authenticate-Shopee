@@ -13,6 +13,7 @@ import json
 from django.conf import settings
 import os
 import pickle as pk
+# from pymongo import MongoClient
 
 value = settings.BASE_DIR
 
@@ -240,14 +241,24 @@ def predicted_price(request):
     elif request.method == "POST":
         print(request.POST.get("laptop"))
 
-        test = pd.DataFrame({
-                "Processor" : [decode["Processor"][request.POST.get("processor")]],
-                "RAM" : [decode["RAM"][request.POST.get("ram")]],
-                "Operating System":  [decode["Operating System"][request.POST.get("os")]],
-                "Storage" : [decode["Storage"][request.POST.get("storage")]],
-                "Display" : [decode["Display"][request.POST.get("display")]],
-                "Warranty" : [decode["Warranty"][request.POST.get("warranty")]]
-            })
+        new_data = {
+                "Processor" : decode["Processor"][request.POST.get("processor")],
+                "RAM" : decode["RAM"][request.POST.get("ram")],
+                "Operating System":  decode["Operating System"][request.POST.get("os")],
+                "Storage" : decode["Storage"][request.POST.get("storage")],
+                "Display" : decode["Display"][request.POST.get("display")],
+                "Warranty" : decode["Warranty"][request.POST.get("warranty")]
+            }
+
+        print(new_data)
+        # mongo = MongoClient("mongodb://mongo:27017")
+
+        # mydb = mongo["laptop"]
+
+        # mydb.seats.insert_many(new_data)
+
+        
+        test = pd.DataFrame(dict([(i, [j]) for i,j in zip(new_data.keys(), new_data.values())]))
 
         print(test)
         with open(os.path.join(value, 'models', 'LaptopPricePrediction.pk'), 'rb') as f:
