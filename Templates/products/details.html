@@ -136,9 +136,11 @@
     </button>
 {% endif %}
 
-<h3><b style="color: blue;">Price :</b> {{ object.price }}  </h3>
-
-<h4><b style="color: blue;">Product By :</b> {{ shop }}  </h4>
+    <h3><b style="color: blue;">Price :</b> {{ object.price }}  </h3>
+    {% if predicted_price %}
+      <h4><b style="color: blue;">Predicted Price :</b> {{ predicted_price }}  </h4>
+    {% endif %}
+    <h4><b style="color: blue;">Product By :</b> {{ shop }}  </h4>
   <hr>
 
 <h3>Description : </h3>

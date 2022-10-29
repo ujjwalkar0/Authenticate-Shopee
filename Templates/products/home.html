@@ -129,8 +129,8 @@
                 <h4 class="card-title text-left" ><strong>{{product.title}}</strong></h4>
               </a>
               <div>
-              <h5 class="green-text" style="float: left;"> <strong>Price :- {{product.price}}</strong></h5><br>
-            </div>
+                <h5 class="green-text" style="float: left;"> <strong>Price :- {{product.price}}</strong></h5><br>
+              </div>
               <br />
               <p class="card-text text-left">{{product.desc|safe|slice:":100"}}........
               <br />
@@ -152,7 +152,7 @@
       </div>
     </div>
     </div>
-    </div>
+    </div></div>
     {% endfor %}
     </div>
     {% if user_type == "Delivery Boy" %}  
