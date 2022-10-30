@@ -82,6 +82,8 @@
           <a href="/sells" class="w3-bar-item w3-button">Orders</a>
           <a href="/add_category" class="w3-bar-item w3-button">Add a New Catagory</a>
           <a href="/new_product" class="w3-button"> Add a New Product </a>
+          <a href="/product_api/{{ user.id }}" class="w3-button"> Products API </a>
+
    {% elif user_type == "Customer"  %}
       {% if customer_registered %}
           <a href="/customer/update_customer/{{customer_id}}" class="w3-bar-item w3-button">Change your address</a>

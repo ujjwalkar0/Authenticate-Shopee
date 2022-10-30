@@ -12,4 +12,5 @@ urlpatterns = [
     path('update_product/<int:pk>/', UpdateProductView.as_view()),
     path('delete_product/<int:pk>/', DeleteProductView.as_view()),
     path('predict/', predicted_price),
+    path("product_api/<int:pk>/", ProductsApi.as_view())
 ]

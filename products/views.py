@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, DeleteView, UpdateView, DetailView, CreateView
 from customer.models import Customer
 from products.models import *
+from products.serializers import ProductSerializer
 from users.models import Users
 from business.models import Shop
 from products.forms import *
@@ -13,6 +14,7 @@ import json
 from django.conf import settings
 import os
 import pickle as pk
+from rest_framework.generics import ListAPIView
 # from pymongo import MongoClient
 
 value = settings.BASE_DIR
@@ -182,6 +184,14 @@ decode = {
 
 # print()
 
+class ProductsApi(ListAPIView):
+    model = Product
+    serializer_class = ProductSerializer
+    
+    def get_queryset(self):
+        queryset = self.model.objects.filter(user_id=User.objects.get(id=self.kwargs['pk']))
+        return queryset
+
 class HomeView(ListView):
     model = Product
     template_name = "products/home.html"
@@ -250,21 +260,23 @@ def predicted_price(request):
                 "Warranty" : decode["Warranty"][request.POST.get("warranty")]
             }
 
-        print(new_data)
-        # mongo = MongoClient("mongodb://mongo:27017")
-
-        # mydb = mongo["laptop"]
-
-        # mydb.seats.insert_many(new_data)
-
         
         test = pd.DataFrame(dict([(i, [j]) for i,j in zip(new_data.keys(), new_data.values())]))
 
-        print(test)
         with open(os.path.join(value, 'models', 'LaptopPricePrediction.pk'), 'rb') as f:
             rfr = pk.load(f)
 
         predicted_price = round(rfr.predict(test)[0], 2)
+
+        # mongo = MongoClient("mongodb://mongo:27017")
+
+        # mydb = mongo["authenticateshopee"]
+        
+        # new_data["category"] = "Laptop"
+
+        # mydb.seats.insert_many(new_data)
+
+
 
         return render(request, "products/predict.html", {"predicted_price": predicted_price})
 
@@ -372,54 +384,3 @@ def new_product(request):
     if request.method == "POST":
         print(request.POST)
 
-    #     cat_menu = Categoriess.objects.all()
-    #     my_phones = Phones.objects.filter(user_id=self.request.user.id)
-    #     my_cars = Car.objects.filter(user_id=self.request.user.id)
-    #     my_products = Post.objects.filter(user_id=self.request.user.id)        
-    #     shop = Shop.objects.filter(user_id=self.request.user.id)
-    #     ip = IP.objects.filter(user_id=self.request.user.id)
-    #     shop_owner = shop_id = None
-    #     # print( " ID :- ",self.request.user.id)
-    #     # print(ip)
-    #     for j in shop:
-    #         shop_owner = j.user_id
-    #         shop_id = j.id
-    #         break
-        
-    #     pin_no_by_id=id_by_ip=None
-
-    #     for j in ip:
-    #         print(j.PIN_NO)
-    #         pin_no_by_id = j.PIN_NO
-    #         id_by_ip = j.id
-    #         break
-
-    #     # print(Car.objects.filter(Pin_No=pin_no_by_id))
-
-    #     phones=view_last_8(Phones.objects.filter(Pin_No=pin_no_by_id))       
-    #     car = view_last_8(Car.objects.filter(Pin_No=pin_no_by_id))
-    #     products=view_last_8(Post.objects.filter(Pin_No=pin_no_by_id))
-    #     all_phones=view_last_8(Phones.objects.all())
-    #     all_car=view_last_8(Car.objects.all())
-    #     all_products=view_last_8(Post.objects.all())
-    #     orders = order.objects.filter(Pin_No=pin_no_by_id)
-    #     # print(pin_no_by_id)
-
-    #     context = super(HomeView,self).get_context_data(*args, **kwargs)
-    #     context["cat_menu"] = cat_menu
-    #     context["phones"] = phones
-    #     context["my_phones"] = my_phones
-    #     context["cars"] = car
-    #     context["my_cars"] = my_cars
-    #     context["my_products"] = my_products
-    #     context["user_type"] = user_type(self.request.user)
-    #     context["shop_owner"] = shop_owner
-    #     context["all_phones"] = all_phones
-    #     context["all_cars"] = all_car
-    #     context["all_products"] = all_products
-    #     context["shop_id"] = shop_id
-    #     context["pin_no_by_id"] = id_by_ip
-    #     context["products"] = products
-    #     context["orders"] = reversed(list(orders))
-    #     context["is_paginated"] = True
-    #     return context
