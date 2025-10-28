@@ -1,1 +1,13 @@
+# --- Exclude frontend/vendor assets from GitHub language stats ---
+
+# Ignore all static assets (Bootstrap, CSS, JS, images, etc.)
 static/** linguist-vendored
+
+# Optional: also exclude collected static files (if you use collectstatic)
+staticfiles/** linguist-vendored
+
+# Ignore migration auto-generated files
+**/migrations/** linguist-generated
+
+# Treat Python files as the primary language
+*.py linguist-language=Python
