@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 {% load static %}
 
 {% block content %}
@@ -7,6 +7,7 @@
         display: none;
     }
 </style>
+{{ form.media }}
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p}}
@@ -14,9 +15,7 @@
     <button id="submit" type="submit" class="btn btn-secondary">Submit</button>
 </form>
 
-<!----------------------: Javascript for CKEDITOR :--------------------------->
-<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
-<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
 <script>
 
 const others = {};

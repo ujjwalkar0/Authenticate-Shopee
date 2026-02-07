@@ -1,0 +1,8 @@
+<!-- Additional nav items based on user type -->
+{% if user_type == "Business" %}
+  {% include 'business/components/profile_bar.html' %}
+{% elif user_type == "Customer" %}
+  {% include 'customer/components/profile_bar.html' %}
+{% elif user_type == "Delivery Boy" %}
+  {% include 'delivery/components/profile_bar.html' %}
+{% endif %}

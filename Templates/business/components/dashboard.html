@@ -1,0 +1,406 @@
+<!-- Business Dashboard Component -->
+<div class="dashboard-container py-4">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h2 class="dashboard-title mb-1">
+                    <i class="fas fa-store mr-2"></i>
+                    Welcome back, {{ shop.shop_name|default:"Business Owner" }}!
+                </h2>
+                <p class="text-muted mb-0">Here's what's happening with your business today</p>
+            </div>
+            <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                <a href="{% url 'products:new_product' %}" class="btn btn-dashboard-primary">
+                    <i class="fas fa-plus mr-2"></i>Add Product
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Cards Row -->
+    <div class="row mb-4">
+        <!-- Total Revenue Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="dashboard-card card-revenue">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-label mb-1">Total Revenue</p>
+                            <h3 class="card-value mb-0">₹{{ total_revenue|default:"0" }}</h3>
+                            <small class="card-trend text-success">
+                                <i class="fas fa-arrow-up"></i> {{ revenue_trend|default:"0" }}% from last month
+                            </small>
+                        </div>
+                        <div class="card-icon bg-success-gradient">
+                            <i class="fas fa-rupee-sign"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Orders Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="dashboard-card card-orders">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-label mb-1">Total Orders</p>
+                            <h3 class="card-value mb-0">{{ total_orders|default:"0" }}</h3>
+                            <small class="card-trend">
+                                <span class="text-warning">{{ pending_orders|default:"0" }} pending</span>
+                            </small>
+                        </div>
+                        <div class="card-icon bg-primary-gradient">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Products Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="dashboard-card card-products">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-label mb-1">Total Products</p>
+                            <h3 class="card-value mb-0">{{ total_products|default:"0" }}</h3>
+                            <small class="card-trend text-info">
+                                <i class="fas fa-box"></i> In your inventory
+                            </small>
+                        </div>
+                        <div class="card-icon bg-info-gradient">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Low Stock Alert Card -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="dashboard-card card-alerts">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="card-label mb-1">Low Stock Alerts</p>
+                            <h3 class="card-value mb-0">{{ low_stock_count|default:"0" }}</h3>
+                            <small class="card-trend text-danger">
+                                <i class="fas fa-exclamation-triangle"></i> Items need restocking
+                            </small>
+                        </div>
+                        <div class="card-icon bg-danger-gradient">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Row -->
+    <div class="row">
+        <!-- Recent Orders Section -->
+        <div class="col-lg-8 mb-4">
+            <div class="dashboard-card">
+                <div class="card-header-custom">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clipboard-list mr-2"></i>Recent Orders
+                    </h5>
+                    <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-dashboard mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Product</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in recent_orders %}
+                                <tr>
+                                    <td><span class="order-id">#{{ order.id }}</span></td>
+                                    <td>
+                                        <div class="customer-info">
+                                            <span class="customer-name">{{ order.customer.name.username }}</span>
+                                        </div>
+                                    </td>
+                                    <td>{{ order.product.title|truncatechars:25 }}</td>
+                                    <td><strong>₹{{ order.product.price }}</strong></td>
+                                    <td>
+                                        {% if order.is_accepted is None %}
+                                            <span class="badge badge-warning">Pending</span>
+                                        {% elif order.is_accepted %}
+                                            <span class="badge badge-success">Accepted</span>
+                                        {% else %}
+                                            <span class="badge badge-danger">Rejected</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if order.is_accepted is None %}
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="#" class="btn btn-success btn-sm" title="Accept">
+                                                <i class="fas fa-check"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-danger btn-sm" title="Reject">
+                                                <i class="fas fa-times"></i>
+                                            </a>
+                                        </div>
+                                        {% else %}
+                                        <a href="#" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">
+                                        <div class="empty-state">
+                                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                            <p class="text-muted mb-0">No orders yet</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="col-lg-4">
+            <!-- Quick Actions -->
+            <div class="dashboard-card mb-4">
+                <div class="card-header-custom">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bolt mr-2"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="quick-actions-grid">
+                        <a href="{% url 'products:new_product' %}" class="quick-action-btn">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Add Product</span>
+                        </a>
+                        <a href="#" class="quick-action-btn">
+                            <i class="fas fa-list-alt"></i>
+                            <span>All Orders</span>
+                        </a>
+                        <a href="{% url 'home:index' %}" class="quick-action-btn">
+                            <i class="fas fa-box-open"></i>
+                            <span>My Products</span>
+                        </a>
+                        <a href="/register_shop/" class="quick-action-btn">
+                            <i class="fas fa-store-alt"></i>
+                            <span>Shop Settings</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Low Stock Products -->
+            <div class="dashboard-card mb-4">
+                <div class="card-header-custom">
+                    <h5 class="mb-0">
+                        <i class="fas fa-exclamation-circle mr-2 text-warning"></i>Low Stock Items
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="low-stock-list">
+                        {% for product in low_stock_products %}
+                        <li class="low-stock-item">
+                            <div class="d-flex align-items-center">
+                                <img src="{{ product.image1.url }}" alt="{{ product.title }}" class="low-stock-img">
+                                <div class="low-stock-info">
+                                    <span class="product-name">{{ product.title|truncatechars:20 }}</span>
+                                    <span class="stock-count {% if product.stock == 0 %}text-danger{% else %}text-warning{% endif %}">
+                                        {% if product.stock == 0 %}
+                                            Out of Stock
+                                        {% else %}
+                                            Only {{ product.stock }} left
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                            <a href="{% url 'products:update' product.id %}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </li>
+                        {% empty %}
+                        <li class="low-stock-item justify-content-center">
+                            <div class="text-center py-3">
+                                <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                                <p class="text-muted mb-0">All products well stocked!</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Order Status Overview -->
+            <div class="dashboard-card">
+                <div class="card-header-custom">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-pie mr-2"></i>Order Status
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="order-status-list">
+                        <div class="status-item">
+                            <div class="status-info">
+                                <span class="status-dot bg-warning"></span>
+                                <span>Pending</span>
+                            </div>
+                            <span class="status-count">{{ pending_orders|default:"0" }}</span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-info">
+                                <span class="status-dot bg-success"></span>
+                                <span>Accepted</span>
+                            </div>
+                            <span class="status-count">{{ accepted_orders|default:"0" }}</span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-info">
+                                <span class="status-dot bg-danger"></span>
+                                <span>Rejected</span>
+                            </div>
+                            <span class="status-count">{{ rejected_orders|default:"0" }}</span>
+                        </div>
+                    </div>
+                    <!-- Progress Bars -->
+                    <div class="mt-3">
+                        <div class="progress-item mb-2">
+                            <div class="d-flex justify-content-between mb-1">
+                                <small>Acceptance Rate</small>
+                                <small>{{ acceptance_rate|default:"0" }}%</small>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-success" style="width: {{ acceptance_rate|default:'0' }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sales Analytics Row -->
+    <div class="row mt-4">
+        <!-- Sales Chart -->
+        <div class="col-lg-8 mb-4">
+            <div class="dashboard-card">
+                <div class="card-header-custom">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-line mr-2"></i>Sales Overview
+                    </h5>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-primary active" data-period="week">Week</button>
+                        <button class="btn btn-outline-primary" data-period="month">Month</button>
+                        <button class="btn btn-outline-primary" data-period="year">Year</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas id="salesChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Selling Products -->
+        <div class="col-lg-4 mb-4">
+            <div class="dashboard-card">
+                <div class="card-header-custom">
+                    <h5 class="mb-0">
+                        <i class="fas fa-fire mr-2 text-danger"></i>Top Selling
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="top-products-list">
+                        {% for product in top_products %}
+                        <li class="top-product-item">
+                            <div class="rank-badge">{{ forloop.counter }}</div>
+                            <img src="{{ product.image1.url }}" alt="{{ product.title }}" class="product-thumb">
+                            <div class="product-info">
+                                <span class="product-name">{{ product.title|truncatechars:18 }}</span>
+                                <span class="product-sales">{{ product.order_count }} sold</span>
+                            </div>
+                            <span class="product-revenue">₹{{ product.revenue }}</span>
+                        </li>
+                        {% empty %}
+                        <li class="top-product-item justify-content-center">
+                            <div class="text-center py-4">
+                                <i class="fas fa-chart-bar fa-2x text-muted mb-2"></i>
+                                <p class="text-muted mb-0">No sales data yet</p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js for Sales Chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('salesChart');
+    if (ctx) {
+        const salesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ sales_labels|safe|default:"['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']" }},
+                datasets: [{
+                    label: 'Revenue (₹)',
+                    data: {{ sales_data|safe|default:"[0, 0, 0, 0, 0, 0, 0]" }},
+                    borderColor: '#e94560',
+                    backgroundColor: 'rgba(233, 69, 96, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#e94560',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+});
+</script>

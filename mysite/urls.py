@@ -5,7 +5,9 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('products.urls')),
+    path('ckeditor5/', include('django_ckeditor_5.urls')),
+    path('', include('home.urls')),
+    path('products/', include('products.urls')),
     path('user/', include('users.urls')),
     path('business/', include('business.urls')),
     path('customer/', include('customer.urls')),

@@ -1,0 +1,104 @@
+<!-- Delivery Agent Dashboard Component -->
+<div class="tw:bg-gray-100 tw:p-3 tw:flex tw:flex-wrap tw:gap-2 tw:rounded-lg tw:mb-6">
+  {% if deliveryagent_registered %}
+    <a href="/delivery/update/{{deliveryagent_id}}" class="btn btn-outline-primary btn-sm">Update Mobile</a>
+    <a href="/orders/" class="btn btn-outline-secondary btn-sm">My Orders</a>
+  {% else %}
+    <a href="/delivery/create/" class="btn btn-primary btn-sm">Register Mobile</a>
+  {% endif %}
+</div>
+
+{% if deliveryagent_registered %}
+<!-- Orders Section -->
+<section class="tw:my-8">
+  <div class="tw:max-w-md">
+    <input id="orders-input" type="text" placeholder="Enter Area Pin No" 
+           class="form-control tw:mb-4" autocomplete="off">
+  </div>
+  <div id="orders-list" class="tw:space-y-4"></div>
+</section>
+
+<script>
+(function() {
+  const ordersInput = document.getElementById('orders-input');
+  const ordersList = document.getElementById('orders-list');
+  if (!ordersInput || !ordersList) return;
+
+  ordersInput.addEventListener('blur', async function() {
+    if (!this.value.trim()) return;
+    
+    try {
+      const response = await fetch("{{ hostname }}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: this.value
+      });
+      const orders = await response.json();
+      
+      ordersList.innerHTML = orders.map(order => `
+        <div class="card">
+          <div class="row g-0">
+            <div class="col-md-3">
+              <img src="${order.product_image}" class="img-fluid rounded-start h-100 tw:object-cover" alt="${order.product_name}">
+            </div>
+            <div class="col-md-9">
+              <div class="card-body">
+                <h5 class="card-title">${order.product_name}</h5>
+                <div class="row">
+                  <div class="col-md-6">
+                    <p class="tw:mb-1"><strong>Customer:</strong> ${order.customer_name}</p>
+                    <p class="tw:mb-1"><strong>Phone:</strong> ${order.customer_phone_no}</p>
+                    <p class="tw:mb-1"><strong>Address:</strong> ${order.customer_address}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="tw:mb-1"><strong>Shop:</strong> ${order.shop_name}</p>
+                    <p class="tw:mb-1"><strong>Contact:</strong> ${order.shop_contact_number}</p>
+                    <p class="tw:mb-1"><strong>Location:</strong> ${order.shop_address}</p>
+                  </div>
+                </div>
+                <button class="btn btn-success tw:mt-3 take-delivery-btn" data-order-id="${order.order_id}">
+                  Take Delivery
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    } catch (err) {
+      console.error('Failed to fetch orders:', err);
+    }
+  });
+
+  ordersList.addEventListener('click', async function(e) {
+    const btn = e.target.closest('.take-delivery-btn');
+    if (!btn) return;
+    
+    btn.disabled = true;
+    btn.textContent = 'Processing...';
+    
+    try {
+      await fetch("{{ accept }}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({
+          order_id: btn.dataset.orderId,
+          deliveryagent: "{{ user }}"
+        })
+      });
+      btn.textContent = 'Accepted ✓';
+      btn.classList.replace('btn-success', 'btn-secondary');
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Take Delivery';
+      console.error('Failed to accept order:', err);
+    }
+  });
+})();
+</script>
+{% endif %}

@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@import "tailwindcss" prefix(tw);
 @source "../../Templates/**/*.html";
 
 /* Custom styles below */
+/* Use Tailwind with 'tw:' prefix to avoid Bootstrap conflicts */
+/* Example: tw:bg-blue-500, tw:text-white, tw:p-4 */

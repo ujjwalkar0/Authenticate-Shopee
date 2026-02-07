@@ -4,7 +4,10 @@
   "description": "## Project Overview This project was originally built during the **lockdown** for a hackathon to help local businesses sell their products online and connect with delivery personnel efficiently. While it was designed to address immediate challenges, the platform has **broader applications** beyond the hackathon, making it adaptable for various business models.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "tailwindcss -i ./static/css/input.css -o ./static/css/output.css",
+    "watch:css": "tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch",
+    "dev": "concurrently \"npm run watch:css\" \"python manage.py runserver\""
   },
   "repository": {
     "type": "git",
@@ -18,9 +21,16 @@
   },
   "homepage": "https://github.com/ujjwalkar0/Authenticate-Shopee#readme",
   "dependencies": {
+    "@fontsource/poppins": "^5.2.7",
+    "@fortawesome/fontawesome-free": "^7.1.0",
     "bootstrap": "^4.6.2",
     "jquery": "^3.7.1",
     "mdbootstrap": "^4.20.0",
     "popper.js": "^1.16.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "concurrently": "^9.2.1",
+    "tailwindcss": "^4.1.18"
   }
 }

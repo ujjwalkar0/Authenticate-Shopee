@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+
+{% block my_content %}
+  {% if user_type == "Business" %}
+    {% include 'business/components/dashboard.html' %}
+  {% elif user_type == "Customer" %}
+    {% include 'customer/components/dashboard.html' %}
+  {% elif user_type == "Delivery Boy" %}
+    {% include 'delivery/components/dashboard.html' %}
+  {% endif %}
+{% endblock my_content %}

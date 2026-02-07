@@ -1,0 +1,63 @@
+{% load static %} {% load node_modules %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+  <!-- SEO Meta Tags -->
+  <meta name="description"
+    content="{% block meta_description %}Authenticate Shopee - Your trusted online marketplace for authentic products. Shop from verified sellers with secure transactions.{% endblock meta_description %}" />
+  <meta name="keywords"
+    content="{% block meta_keywords %}online shopping, authentic products, verified sellers, e-commerce, marketplace{% endblock meta_keywords %}" />
+  <meta name="author" content="Authenticate Shopee" />
+  <meta name="robots" content="{% block meta_robots %}index, follow{% endblock meta_robots %}" />
+  <meta name="theme-color" content="#667eea" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="{% block og_type %}website{% endblock og_type %}" />
+  <meta property="og:title" content="{% block og_title %}Authenticate Shopee{% endblock og_title %}" />
+  <meta property="og:description"
+    content="{% block og_description %}Your trusted online marketplace for authentic products.{% endblock og_description %}" />
+  <meta property="og:site_name" content="Authenticate Shopee" />
+  {% block og_image %}{% endblock og_image %} 
+  {% block canonical %}{% endblock canonical %}
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{% block twitter_title %}Authenticate Shopee{% endblock twitter_title %}" />
+  <meta name="twitter:description"
+    content="{% block twitter_description %}Your trusted online marketplace for authentic products.{% endblock twitter_description %}" />
+
+  <link rel="stylesheet" type="text/css" href="{% node_static 'bootstrap/dist/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% node_static 'mdbootstrap/css/mdb.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% node_static '@fortawesome/fontawesome-free/css/all.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% node_static '@fontsource/poppins/600.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/output.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
+  <title>
+    Authenticate Shopee | {% block title %}Welcome {% endblock title %}
+  </title>
+  {% block extra_css %}{% endblock extra_css %}
+</head>
+
+<body>
+  {% include 'components/navbar.html' %} 
+    {% block my_content %}
+      <main class="container">
+    {% block content %} 
+    {% endblock content %}</main>
+  {% endblock my_content %} 
+  {% include 'components/footer.html' %} 
+  
+  {% block extra_js %}{% endblock extra_js %}
+</body>
+<script src="{% node_static 'jquery/dist/jquery.min.js' %}"></script>
+<script src="{% node_static 'popper.js/dist/umd/popper.min.js' %}"></script>
+<script src="{% node_static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script src="{% node_static 'mdbootstrap/js/mdb.min.js' %}"></script>
+
+</html>

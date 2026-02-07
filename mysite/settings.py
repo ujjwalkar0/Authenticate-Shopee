@@ -26,8 +26,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mysite',
+    'home',
     'products',
-    'ckeditor',
+    'django_ckeditor_5',
     'users',
     'business',
     'rest_framework',
@@ -132,7 +133,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATIC_ROOT = os.path.join(BASE_DIR,'assets')
+STATIC_ROOT = os.path.join(BASE_DIR,'build')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
@@ -146,66 +147,43 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 
-CKEDITOR_CONFIGS = {
+# CKEditor 5 Configuration
+CKEDITOR_5_CONFIGS = {
     'default': {
-        'skin': 'moono',
-        'toolbar_Basic': [
-            ['Source', '-', 'Bold', 'Italic']
+        'toolbar': ['heading', '|', 'bold', 'italic', 'link',
+                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload'],
+    },
+    'extends': {
+        'blockToolbar': [
+            'paragraph', 'heading1', 'heading2', 'heading3',
+            '|',
+            'bulletedList', 'numberedList',
+            '|',
+            'blockQuote',
         ],
-        'toolbar_YourCustomToolbarConfig': [
-            {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
-            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
-            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
-            {'name': 'forms',
-             'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
-                       'HiddenField']},
-            '/',
-            {'name': 'basicstyles',
-             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
-            {'name': 'paragraph',
-             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
-                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
-                       'Language']},
-            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
-            {'name': 'insert',
-             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
-            '/',
-            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
-            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
-            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
-            {'name': 'about', 'items': ['About']},
-            '/',  # put this to force next toolbar on new line
-            {'name': 'yourcustomtools', 'items': [
-                # put the name of your editor.ui.addButton here
-                'Preview',
-                'Maximize',
-
-            ]},
-        ],
-        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
-        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
-        # 'height': 700,
-        'width': '120%',
-        # 'filebrowserWindowHeight': 725,
-        # 'filebrowserWindowWidth': 940,
-        # 'toolbarCanCollapse': True,
-        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
-        'tabSpaces': 4,
-        'extraPlugins': ','.join([
-            'uploadimage', # the upload image feature
-            'div',
-            'autolink',
-            'autoembed',
-            'embedsemantic',
-            'autogrow',
-            'devtools',
-            'widget',
-            'lineutils',
-            'clipboard',
-            'dialog',
-            'dialogui',
-            'elementspath'
-        ]),
-    }
+        'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
+                    'code', 'subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
+                    'bulletedList', 'numberedList', 'todoList', '|', 'blockQuote', 'imageUpload', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
+                    'insertTable'],
+        'image': {
+            'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
+                        'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side'],
+        },
+        'table': {
+            'contentToolbar': ['tableColumn', 'tableRow', 'mergeTableCells',
+                               'tableProperties', 'tableCellProperties'],
+        },
+        'heading': {
+            'options': [
+                {'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph'},
+                {'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1'},
+                {'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2'},
+                {'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3'},
+            ]
+        },
+    },
 }
+
+CKEDITOR_5_FILE_UPLOAD_PERMISSION = "authenticated"
 

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 
 fuel = [('Petrol', 'Petrol'), ('Diesel', 'Diesel'), ('CNG', 'CNG'), ('Electric', 'Electric'), ('LPG', 'LPG')]
 seller_type_ = [('Dealer', 'Dealer'), ('Individual', 'Individual'), ('Trustmark 0', 'Trustmark 0')]
@@ -28,7 +28,7 @@ class Product(models.Model):
     catagory = models.ForeignKey(Categories, on_delete=models.CASCADE)
     stock = models.IntegerField()
     price = models.IntegerField()
-    desc = RichTextField()
+    desc = CKEditor5Field('Description', config_name='extends')
     post_date = models.DateField(auto_now_add=True,)
     Pin_No = models.IntegerField()
 

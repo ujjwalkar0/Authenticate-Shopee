@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg sticky-top navbar-dark navbar-custom">
+  <a class="navbar-brand" href="/">
+    <span style="font-size: 1.8rem;">🛒</span> Authenticate Shopee
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav ml-auto">
+      {% include 'components/additional_nav_links.html' %}
+
+      {% if user.is_authenticated %}
+        <li class="nav-item avatar dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {% if user.profile_image %}
+              <img src="{{ user.profile_image.url }}" class="rounded-circle z-depth-0" style="width:35px; height:35px; object-fit:cover;"
+                alt="avatar">
+            {% else %}
+              <span class="user-avatar-initials">{{ user.first_name|default:user.username|make_list|first|upper }}</span>
+            {% endif %}
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+            aria-labelledby="navbarDropdownMenuLink-55">
+            {% if user.is_superuser %}
+              <a class="dropdown-item" href="/upload-csv">Add many Items as a csv file</a>
+            {% endif %}
+            <a class="dropdown-item">{{user.first_name}} {{user.last_name}} ( {{user.username}} )</a>
+            {% include 'components/additional_nav_items.html' %}
+            <a class="dropdown-item" href="/user/logout/">Logout</a>
+          </div>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link btn-login" href="/user/login/">Login</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+
+<div class="back-to-top">
+  <a href="#" title="Back to Top">▲</a>
+</div>

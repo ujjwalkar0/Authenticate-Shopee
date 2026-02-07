@@ -1,0 +1,43 @@
+<!-- Customer Dashboard Component -->
+<div class="tw:bg-gray-100 tw:p-3 tw:flex tw:flex-wrap tw:gap-2 tw:rounded-lg tw:mb-6">
+  {% if customer_registered %}
+    <a href="/customer/update_customer/{{customer_id}}" class="btn btn-outline-primary btn-sm">Change Address</a>
+    <a href="/orders/" class="btn btn-outline-secondary btn-sm">My Orders</a>
+  {% else %}
+    <a href="/customer/register_customer/" class="btn btn-primary btn-sm">Save Address</a>
+  {% endif %}
+</div>
+
+<!-- Product Grid -->
+<section class="tw:my-8">
+  {% if products %}<h3 class="tw:text-2xl tw:font-semibold tw:mb-6">{{ products }}</h3>{% endif %}
+  
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+    {% for product in product_list %}
+    <div class="col">
+      <article class="card h-100 tw:shadow-md tw:hover:shadow-xl tw:transition-shadow">
+        <img src="/media/{{ product.image1 }}" 
+             class="card-img-top tw:h-48 tw:object-contain tw:p-2" 
+             alt="{{ product.title }}" loading="lazy">
+        <div class="card-body tw:flex tw:flex-col">
+          <a href="/products/details/{{ product.id }}" class="tw:no-underline tw:text-inherit">
+            <h5 class="card-title tw:font-bold">{{ product.title }}</h5>
+          </a>
+          <p class="tw:text-green-600 tw:font-semibold tw:text-lg">₹{{ product.price }}</p>
+          <p class="card-text tw:text-gray-600 tw:flex-grow">
+            {{ product.desc|safe|truncatechars:100 }}
+          </p>
+          <a href="/products/details/{{ product.id }}" class="btn btn-link tw:p-0 tw:self-end">Read More →</a>
+        </div>
+        <div class="card-footer text-muted tw:text-center tw:text-sm">
+          {{ product.post_date }}
+        </div>
+      </article>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <p class="tw:text-center tw:text-gray-500">No products available.</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>

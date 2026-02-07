@@ -1,0 +1,8 @@
+<!-- Additional nav links based on user type -->
+{% if user_type == "Business" %}
+  {% include 'business/components/navbar.html' %}
+{% elif user_type == "Customer" %}
+  {% include 'customer/components/navbar.html' %}
+{% elif user_type == "Delivery Boy" %}
+  {% include 'delivery/components/navbar.html' %}
+{% endif %}
